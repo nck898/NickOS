@@ -1,6 +1,8 @@
 # NickOS 🍎
 
-A retro Y2K-inspired web operating system built with React and TypeScript. Experience the nostalgia of classic MacOS and Windows interfaces in your browser!
+A retro Y2K-inspired web operating system built with React and TypeScript. Inspired by both RyoOS and PostHog's website, this was built with Cursor, Codex, and my own codin skills :)
+
+![NickOS Screenshot](./dist/NickOS_screenshot.png)
 
 ## Features
 
