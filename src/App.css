@@ -1,0 +1,16 @@
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.desktop-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+}

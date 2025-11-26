@@ -1,0 +1,170 @@
+.browser-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(180deg, #f5f7fb 0%, #e2e7f3 100%);
+  border: 1px solid #9aa7c4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  font-family: 'Verdana', 'Geneva', sans-serif;
+}
+
+.browser-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: linear-gradient(180deg, #e8edf8 0%, #cdd7eb 100%);
+  border-bottom: 1px solid #9aa7c4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 6px;
+}
+
+.toolbar-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid #7f8a9f;
+  background: linear-gradient(180deg, #ffffff 0%, #d7deec 100%);
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8), 0 1px 3px rgba(0, 0, 0, 0.25);
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.toolbar-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.toolbar-btn:not(:disabled):active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.address-bar {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: linear-gradient(180deg, #ffffff 0%, #e6ebf5 100%);
+  border: 1px solid #8b98b5;
+  border-radius: 10px;
+  padding: 4px 6px 4px 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.address-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  color: #1f3b63;
+}
+
+.go-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #6f83af;
+  background: linear-gradient(180deg, #ffffff 0%, #d5def0 100%);
+  cursor: pointer;
+  font-weight: bold;
+  color: #1f3b63;
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8), 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.bookmark-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: linear-gradient(180deg, #fdfefe 0%, #e8edf8 100%);
+  border-bottom: 1px solid #9aa7c4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.bookmark {
+  border: 1px solid #7f8a9f;
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: linear-gradient(180deg, #ffffff 0%, #d7deec 100%);
+  cursor: pointer;
+  font-size: 12px;
+  color: #1f3b63;
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8), 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.loading-dot {
+  margin-left: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #7f8a9f;
+  background: linear-gradient(180deg, #ffffff 0%, #d7deec 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.loading-dot .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2a5fa6;
+  opacity: 0.25;
+  transition: opacity 0.2s ease;
+}
+
+.loading-dot.active .dot {
+  opacity: 1;
+  animation: pulse 1s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.4; }
+}
+
+.browser-frame {
+  position: relative;
+  flex: 1;
+  background: #1b1e24;
+  border-top: 1px solid #9aa7c4;
+  border-bottom: 1px solid #9aa7c4;
+  overflow: hidden;
+}
+
+.browser-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: white;
+}
+
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(237, 242, 252, 0.85);
+  color: #1f3b63;
+  font-weight: bold;
+}
+
+.browser-status {
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #2e4b7f;
+  background: linear-gradient(180deg, #e8edf8 0%, #cdd7eb 100%);
+  border-top: 1px solid #9aa7c4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
