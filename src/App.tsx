@@ -6,7 +6,7 @@ import AboutModal from './components/AboutModal';
 import CursorTrail from './components/CursorTrail';
 import TrashApp from './components/apps/TrashApp';
 import VideoApp from './components/apps/VideoApp';
-import PongApp from './components/apps/PongApp';
+import GameApp from './components/apps/GameApp';
 import FLStudioApp from './components/apps/FLStudioApp';
 import WallpaperApp from './components/apps/WallpaperApp';
 import BrowserApp from './components/apps/BrowserApp';
@@ -18,7 +18,7 @@ import WeatherWidget from './components/WeatherWidget';
 import PictureFrameWidget from './components/PictureFrameWidget';
 import './App.css';
 
-export type AppName = 'trash' | 'video' | 'pong' | 'flstudio' | 'wallpaper' | 'browser' | 'photostudio' | 'chat' | 'notes';
+export type AppName = 'trash' | 'video' | 'game' | 'flstudio' | 'wallpaper' | 'browser' | 'photostudio' | 'chat' | 'notes';
 
 // Wallpaper variants for light/dark; add your dark-mode assets in /public with these names
 const wallpaperVariants: { [key: string]: { light: string; dark?: string } } = {
@@ -157,8 +157,8 @@ function App() {
               return <TrashApp key={appName} onClose={() => handleCloseApp(appName)} onMinimize={() => handleMinimize(appName)} isMinimized={minimizedApps.has(appName)} />;
             case 'video':
               return <VideoApp key={appName} onClose={() => handleCloseApp(appName)} onMinimize={() => handleMinimize(appName)} isMinimized={minimizedApps.has(appName)} />;
-            case 'pong':
-              return <PongApp key={appName} onClose={() => handleCloseApp(appName)} onMinimize={() => handleMinimize(appName)} isMinimized={minimizedApps.has(appName)} />;
+            case 'game':
+              return <GameApp key={appName} onClose={() => handleCloseApp(appName)} onMinimize={() => handleMinimize(appName)} isMinimized={minimizedApps.has(appName)} />;
             case 'flstudio':
               return <FLStudioApp key={appName} onClose={() => handleCloseApp(appName)} onMinimize={() => handleMinimize(appName)} isMinimized={minimizedApps.has(appName)} />;
             case 'wallpaper':

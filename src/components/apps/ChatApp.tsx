@@ -23,7 +23,7 @@ const nickReplies = [
   "If we had WebLLM humming, I'd have citations right here.",
   "Let me mirror that back with extra glow.",
   "I hear you — feels like a side quest worth doing.",
-  "Big mood. Let's make it weird and intentional.",
+  "Big mood.",
 ];
 
 const ChatApp = ({ onClose, messages, onSend, onMinimize, isMinimized }: ChatAppProps) => {

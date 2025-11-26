@@ -13,7 +13,7 @@ Test it out [here](https://nick-os.vercel.app/)
 - 🎯 **Dock Bar** - Bottom dock with hover magnification effects (just like Mac OS!)
 - 🗑️ **Trash App** - Empty your trash with style
 - 🎬 **Video Player** - Watch funny YouTube videos
-- 🎮 **Pong Game** - Classic retro game with AI opponent
+- 🐍 **Snake Game** - Retro snake with keyboard controls
 
 
 

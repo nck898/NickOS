@@ -91,9 +91,12 @@ const NoteApp = ({ onClose, onMinimize, isMinimized }: NoteAppProps) => {
 
   const createNote = () => {
     const id = crypto.randomUUID();
-    const newNote: Note = { id, title: 'Untitled', content: editorRef.current?.innerHTML || '', updated: Date.now() };
-    setNotes([newNote, ...notes]);
+    const newNote: Note = { id, title: 'Untitled', content: '', updated: Date.now() };
+    setNotes((prev) => [newNote, ...prev]);
     setActiveId(id);
+    if (editorRef.current) {
+      editorRef.current.innerHTML = '';
+    }
   };
 
   const updateNote = (fields: Partial<Note>) => {

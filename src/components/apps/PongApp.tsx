@@ -3,12 +3,13 @@ import Window from './Window';
 import './PongApp.css';
 
 interface PongAppProps {
-  onClose: () => void;
+  onClose?: () => void;
   onMinimize?: () => void;
   isMinimized?: boolean;
+  embedded?: boolean;
 }
 
-const PongApp = ({ onClose, onMinimize, isMinimized }: PongAppProps) => {
+const PongApp = ({ onClose, onMinimize, isMinimized, embedded = false }: PongAppProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState({ player: 0, ai: 0 });
   const [gameState, setGameState] = useState<'menu' | 'playing' | 'paused'>('menu');
@@ -16,9 +17,10 @@ const PongApp = ({ onClose, onMinimize, isMinimized }: PongAppProps) => {
   const paddleHeight = 80;
   const paddleWidth = 10;
   const ballSize = 10;
-  const gameSpeed = 5;
+  const baseSpeed = 5;
+  const rallyBoost = useRef(0);
 
-  const [ball, setBall] = useState({ x: 300, y: 200, dx: gameSpeed, dy: gameSpeed });
+  const [ball, setBall] = useState({ x: 300, y: 200, dx: baseSpeed, dy: baseSpeed });
   const [playerPaddle, setPlayerPaddle] = useState(150);
   const [aiPaddle, setAiPaddle] = useState(150);
   const [keys, setKeys] = useState({ up: false, down: false });
@@ -72,53 +74,70 @@ const PongApp = ({ onClose, onMinimize, isMinimized }: PongAppProps) => {
       // AI paddle (simple follow ball)
       setAiPaddle(prev => {
         const center = prev + paddleHeight / 2;
-        if (ball.y < center - 5) return Math.max(0, prev - 4);
-        if (ball.y > center + 5) return Math.min(canvas.height - paddleHeight, prev + 4);
+        const totalScore = score.player + score.ai;
+        const mult = 1 + totalScore * 0.08; // medium scaling
+        const aiSpeed = 3.2 * mult;
+        const targetY = ball.x > canvas.width / 2 ? ball.y + ball.dy * 6 : ball.y; // lead a bit when coming in
+        if (targetY < center - 4) return Math.max(0, prev - aiSpeed);
+        if (targetY > center + 4) return Math.min(canvas.height - paddleHeight, prev + aiSpeed);
         return prev;
       });
 
       // Move ball
       setBall(prev => {
+        const prevX = prev.x;
         let newX = prev.x + prev.dx;
         let newY = prev.y + prev.dy;
         let newDx = prev.dx;
         let newDy = prev.dy;
+        const totalScore = score.player + score.ai;
+        const speedMult = 1 + totalScore * 0.05 + rallyBoost.current;
 
-        // Ball collision with top/bottom walls
+        // top/bottom
         if (newY <= 0 || newY >= canvas.height - ballSize) {
           newDy = -newDy;
+          newY = Math.max(0, Math.min(canvas.height - ballSize, newY));
         }
 
-        // Ball collision with player paddle
-        if (newX <= paddleWidth && 
-            newY + ballSize >= playerPaddle && 
-            newY <= playerPaddle + paddleHeight &&
-            newDx < 0) {
-          newDx = -newDx;
-          newX = paddleWidth;
+        // player paddle collision (crossing check)
+        if (newX <= paddleWidth && prevX >= paddleWidth - ballSize) {
+          if (newY + ballSize >= playerPaddle && newY <= playerPaddle + paddleHeight) {
+            newDx = Math.abs(newDx);
+            newX = paddleWidth;
+          }
         }
 
-        // Ball collision with AI paddle
-        if (newX >= canvas.width - paddleWidth - ballSize && 
-            newY + ballSize >= aiPaddle && 
-            newY <= aiPaddle + paddleHeight &&
-            newDx > 0) {
-          newDx = -newDx;
-          newX = canvas.width - paddleWidth - ballSize;
+        // AI paddle collision
+        if (newX + ballSize >= canvas.width - paddleWidth && prevX + ballSize <= canvas.width - paddleWidth + ballSize) {
+          if (newY + ballSize >= aiPaddle && newY <= aiPaddle + paddleHeight) {
+            newDx = -Math.abs(newDx);
+            newX = canvas.width - paddleWidth - ballSize;
+          }
         }
 
-        // Score points
-        if (newX < 0) {
+        // Scoring
+        if (newX < -ballSize) {
           setScore(prev => ({ ...prev, ai: prev.ai + 1 }));
-          return { x: canvas.width / 2, y: canvas.height / 2, dx: gameSpeed, dy: gameSpeed };
+          const mult = 1 + (score.player + score.ai + 1) * 0.1;
+          rallyBoost.current = 0;
+          return { x: canvas.width / 2, y: canvas.height / 2, dx: baseSpeed * mult, dy: baseSpeed * mult * (Math.random() > 0.5 ? 1 : -1) };
         }
-        if (newX > canvas.width) {
+        if (newX > canvas.width + ballSize) {
           setScore(prev => ({ ...prev, player: prev.player + 1 }));
-          return { x: canvas.width / 2, y: canvas.height / 2, dx: -gameSpeed, dy: gameSpeed };
+          const mult = 1 + (score.player + score.ai + 1) * 0.1;
+          rallyBoost.current = 0;
+          return { x: canvas.width / 2, y: canvas.height / 2, dx: -baseSpeed * mult, dy: baseSpeed * mult * (Math.random() > 0.5 ? 1 : -1) };
         }
 
-        return { x: newX, y: newY, dx: newDx, dy: newDy };
+        const norm = Math.max(0.01, Math.hypot(newDx, newDy));
+        const scaledDx = (newDx / norm) * baseSpeed * speedMult;
+        const scaledDy = (newDy / norm) * baseSpeed * speedMult;
+
+        return { x: newX, y: newY, dx: scaledDx, dy: scaledDy };
       });
+
+      // rally boost over time to encourage quicker points
+      rallyBoost.current = Math.min(1.5, rallyBoost.current + 0.0008 * (baseSpeed + Math.abs(ball.dx)));
     }, 16);
 
     return () => clearInterval(gameLoop);
@@ -175,49 +194,55 @@ const PongApp = ({ onClose, onMinimize, isMinimized }: PongAppProps) => {
     return () => cancelAnimationFrame(rafId);
   }, [ball, playerPaddle, aiPaddle, score, gameState]);
 
+  const content = (
+    <div className="pong-app">
+      {gameState === 'menu' && (
+        <div className="pong-menu">
+          <h2>🎮 PONG</h2>
+          <p>Use ↑↓ or W/S to move your paddle</p>
+          <button className="retro-button" onClick={() => setGameState('playing')}>
+            Start Game
+          </button>
+        </div>
+      )}
+      {gameState === 'playing' && (
+        <>
+          <canvas
+            ref={canvasRef}
+            width={600}
+            height={400}
+            className="pong-canvas"
+          />
+          <div className="pong-controls">
+            <button className="retro-button" onClick={() => setGameState('paused')}>
+              Pause
+            </button>
+            <button className="retro-button" onClick={() => {
+              setGameState('menu');
+              setScore({ player: 0, ai: 0 });
+              setBall({ x: 300, y: 200, dx: baseSpeed, dy: baseSpeed });
+            }}>
+              Reset
+            </button>
+          </div>
+        </>
+      )}
+      {gameState === 'paused' && (
+        <div className="pong-paused">
+          <h2>PAUSED</h2>
+          <button className="retro-button" onClick={() => setGameState('playing')}>
+            Resume
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
+  if (embedded) return content;
+
   return (
-    <Window title="Pong" icon="🎮" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={700} initialHeight={500}>
-      <div className="pong-app">
-        {gameState === 'menu' && (
-          <div className="pong-menu">
-            <h2>🎮 PONG</h2>
-            <p>Use ↑↓ or W/S to move your paddle</p>
-            <button className="retro-button" onClick={() => setGameState('playing')}>
-              Start Game
-            </button>
-          </div>
-        )}
-        {gameState === 'playing' && (
-          <>
-            <canvas
-              ref={canvasRef}
-              width={600}
-              height={400}
-              className="pong-canvas"
-            />
-            <div className="pong-controls">
-              <button className="retro-button" onClick={() => setGameState('paused')}>
-                Pause
-              </button>
-              <button className="retro-button" onClick={() => {
-                setGameState('menu');
-                setScore({ player: 0, ai: 0 });
-                setBall({ x: 300, y: 200, dx: gameSpeed, dy: gameSpeed });
-              }}>
-                Reset
-              </button>
-            </div>
-          </>
-        )}
-        {gameState === 'paused' && (
-          <div className="pong-paused">
-            <h2>PAUSED</h2>
-            <button className="retro-button" onClick={() => setGameState('playing')}>
-              Resume
-            </button>
-          </div>
-        )}
-      </div>
+    <Window title="Pong" icon="🎮" onClose={onClose!} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={700} initialHeight={500}>
+      {content}
     </Window>
   );
 };

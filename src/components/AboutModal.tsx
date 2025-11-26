@@ -52,6 +52,14 @@ const AboutModal = ({ onClose }: AboutModalProps) => {
                 <span className="spec-label">🎨 Graphics:</span>
                 <span className="spec-value">8-bit Pixel Perfect</span>
               </div>
+              <div className="spec-item">
+                <span className="spec-label">Github:</span>
+                <span className="spec-value">
+                  <a href="https://github.com/nck898/NickOS" target="_blank" rel="noreferrer">
+                    nck898/NickOS
+                  </a>
+                </span>
+              </div>
             </div>
             <div className="about-date">
               <p className="established-date">Established 11/25/25</p>

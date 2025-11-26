@@ -39,7 +39,7 @@ const Dock = ({ openApps, onOpenApp }: DockProps) => {
   const dockItems: { icon: string; label: string; appName: AppName }[] = [
     { icon: '🗑️', label: 'Trash', appName: 'trash' },
     { icon: '▶️', label: 'TV', appName: 'video' },
-    { icon: '🎮', label: 'Pong', appName: 'pong' },
+    { icon: '🎮', label: 'Games', appName: 'game' },
     { icon: '🎵', label: 'FL Studio', appName: 'flstudio' },
     { icon: '🧭', label: 'Safari', appName: 'browser' },
     { icon: '💬', label: 'Chat', appName: 'chat' },
