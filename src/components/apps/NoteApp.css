@@ -75,6 +75,7 @@
   border: 1px solid var(--panel-border);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
   background: #fefefe;
+  color: var(--text-strong);
 }
 
 .note-toolbar {
@@ -111,6 +112,26 @@
 .note-content ul {
   padding-left: 18px;
   margin: 0 0 8px 0;
+}
+
+:root[data-theme='dark'] .note-title-input {
+  background: #0f0f18;
+  border-color: #2f3550;
+  color: #f1f2ff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme='dark'] .note-toolbar button {
+  background: linear-gradient(180deg, #1a1d2a 0%, #111421 100%);
+  border-color: #2f3550;
+  color: #f1f2ff;
+}
+
+:root[data-theme='dark'] .note-content {
+  background: #0c0f17;
+  border-color: #2f3550;
+  color: #f1f2ff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .empty-notes, .empty-editor {

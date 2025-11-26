@@ -10,7 +10,7 @@ interface TrashAppProps {
 
 const TrashApp = ({ onClose, onMinimize, isMinimized }: TrashAppProps) => {
   return (
-    <Window title="Trash" icon="🗑️" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={500} initialHeight={400}>
+    <Window title="Trash" icon="🗑️" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={540} initialHeight={430}>
       <div className="trash-app">
         <div className="trash-icon-large">🗑️</div>
         <h2>Trash</h2>

@@ -170,6 +170,7 @@ function App() {
                   isMinimized={minimizedApps.has(appName)}
                   currentWallpaper={currentWallpaper}
                   onWallpaperChange={handleWallpaperChange}
+                  theme={theme}
                 />
               );
             case 'browser':

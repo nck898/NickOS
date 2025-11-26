@@ -33,7 +33,7 @@
   gap: 16px;
   margin-bottom: 20px;
   flex: 1;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .wallpaper-item {
@@ -181,3 +181,48 @@
   margin: 4px 0;
 }
 
+:root[data-theme='dark'] .wallpaper-app {
+  background: #0f1117;
+  color: #eaeaff;
+}
+
+:root[data-theme='dark'] .wallpaper-header h3,
+:root[data-theme='dark'] .wallpaper-header p,
+:root[data-theme='dark'] .wallpaper-name {
+  color: #eaeaff;
+}
+
+:root[data-theme='dark'] .wallpaper-grid {
+  color: #eaeaff;
+}
+
+:root[data-theme='dark'] .wallpaper-item {
+  background: #0c0f17;
+  border-color: #2f3550;
+}
+
+:root[data-theme='dark'] .wallpaper-item.selected {
+  background: #141927;
+  border-color: #4a90e2;
+  box-shadow: 0 0 12px rgba(74, 144, 226, 0.3);
+}
+
+:root[data-theme='dark'] .wallpaper-preview {
+  background: #111520;
+  border-color: #2f3550;
+}
+
+:root[data-theme='dark'] .wallpaper-preview-placeholder {
+  color: #2f3550;
+}
+
+:root[data-theme='dark'] .wallpaper-info {
+  background: #0c0f17;
+  border-color: #2f3550;
+  color: #cfd3f5;
+}
+
+:root[data-theme='dark'] .wallpaper-info code {
+  background: #111520;
+  color: #eaeaff;
+}

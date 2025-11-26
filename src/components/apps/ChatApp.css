@@ -142,3 +142,79 @@
 .tip + .tip {
   margin-top: 4px;
 }
+
+:root[data-theme='dark'] .chat-app {
+  background: linear-gradient(180deg, #0f1117 0%, #0b0d12 100%);
+  border-color: #2f3550;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme='dark'] .chat-header {
+  background: linear-gradient(180deg, #161a23 0%, #10131c 100%);
+  border-bottom-color: #2f3550;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme='dark'] .nick-avatar {
+  background: linear-gradient(145deg, #1c2130, #151a27);
+  border-color: #2f3550;
+  box-shadow: none;
+  color: #eaeaff;
+}
+
+:root[data-theme='dark'] .nick-name {
+  color: #eaeaff;
+}
+
+:root[data-theme='dark'] .nick-status {
+  color: #9aa3c5;
+}
+
+:root[data-theme='dark'] .chat-history {
+  background: #0b0d12;
+}
+
+:root[data-theme='dark'] .bubble {
+  background: linear-gradient(180deg, #1a1f2b 0%, #131824 100%);
+  border-color: #2f3550;
+  box-shadow: none;
+}
+
+:root[data-theme='dark'] .chat-row.user .bubble {
+  background: linear-gradient(180deg, #1f2a3c 0%, #182234 100%);
+  border-color: #355078;
+}
+
+:root[data-theme='dark'] .bubble-text {
+  color: #eaeaff;
+}
+
+:root[data-theme='dark'] .bubble-time {
+  color: #9aa3c5;
+}
+
+:root[data-theme='dark'] .chat-input-bar {
+  background: linear-gradient(180deg, #161a23 0%, #10131c 100%);
+  border-top-color: #2f3550;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme='dark'] .chat-input-bar input {
+  background: #0f1117;
+  border-color: #2f3550;
+  color: #eaeaff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme='dark'] .chat-input-bar button {
+  background: linear-gradient(180deg, #1a1f2b 0%, #131824 100%);
+  border-color: #2f3550;
+  color: #eaeaff;
+  box-shadow: none;
+}
+
+:root[data-theme='dark'] .chat-footer {
+  background: linear-gradient(180deg, #0f1117 0%, #0b0d12 100%);
+  border-top-color: #2f3550;
+  color: #9aa3c5;
+}

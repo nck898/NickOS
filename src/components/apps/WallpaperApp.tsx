@@ -8,6 +8,7 @@ interface WallpaperAppProps {
   isMinimized?: boolean;
   currentWallpaper: string;
   onWallpaperChange: (wallpaper: string) => void;
+  theme?: 'light' | 'dark';
 }
 
 interface Wallpaper {
@@ -49,7 +50,14 @@ const wallpapers: Wallpaper[] = [
   },
 ];
 
-const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWallpaperChange }: WallpaperAppProps) => {
+const wallpaperVariants: { [key: string]: { light: string; dark?: string } } = {
+  'landscape': { light: 'landscape.png', dark: 'landscape-dark.png' },
+  'snow-leopard': { light: 'snow-leopard.png', dark: 'snow-leopard-dark.png' },
+  'abstract-blue': { light: 'abstract-blue.png', dark: 'abstract-blue-dark.png' },
+  'maplestory': { light: 'maplestory.png', dark: 'maplestory-dark.png' },
+};
+
+const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWallpaperChange, theme = 'light' }: WallpaperAppProps) => {
   const [selectedWallpaper, setSelectedWallpaper] = useState(currentWallpaper);
 
   useEffect(() => {
@@ -61,17 +69,39 @@ const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWa
     onWallpaperChange(wallpaperId);
   };
 
+  const buildPreviewCandidates = (wallpaper: Wallpaper) => {
+    const variant = wallpaperVariants[wallpaper.id];
+    const exts = ['png', 'jpg', 'jpeg'];
+    const baseExt = wallpaper.extension || 'jpg';
+    const themedBase = theme === 'dark' ? variant?.dark : variant?.light;
+    const candidates: string[] = [];
+    if (themedBase) candidates.push(themedBase);
+    candidates.push(`${wallpaper.id}.${baseExt}`);
+    exts.forEach((ext) => candidates.push(`${wallpaper.id}-${theme}.${ext}`));
+    exts.forEach((ext) => candidates.push(`${wallpaper.id}.${ext}`));
+    return Array.from(new Set(candidates));
+  };
+
   const getWallpaperPreview = (wallpaper: Wallpaper) => {
-    const extension = wallpaper.extension || 'jpg';
+    const candidates = buildPreviewCandidates(wallpaper);
+    const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+      const img = e.currentTarget;
+      const nextIndex = Number(img.dataset.idx || '0') + 1;
+      if (nextIndex < candidates.length) {
+        img.dataset.idx = String(nextIndex);
+        img.src = `/${candidates[nextIndex]}`;
+      } else {
+        img.style.display = 'none';
+      }
+    };
+
     return (
-      <div className="wallpaper-preview-image">
-        <img 
-          src={`/${wallpaper.id}.${extension}`} 
+      <div className="wallpaper-preview-image" key={`${wallpaper.id}-${theme}`}>
+        <img
+          src={`/${candidates[0]}`}
+          data-idx="0"
           alt={wallpaper.name}
-          onError={(e) => {
-            // Fallback if image doesn't exist
-            (e.target as HTMLImageElement).style.display = 'none';
-          }}
+          onError={handleError}
         />
         <div className="wallpaper-preview-placeholder">
           {wallpaper.preview}
@@ -81,7 +111,7 @@ const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWa
   };
 
   return (
-    <Window title="Wallpapers" icon="🖼️" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={700} initialHeight={600}>
+    <Window title="Wallpapers" icon="🖼️" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={760} initialHeight={640}>
       <div className="wallpaper-app">
         <div className="wallpaper-header">
           <h3>Select a Wallpaper</h3>
