@@ -40,6 +40,13 @@ const wallpapers: Wallpaper[] = [
     preview: '💙',
     extension: 'png'
   },
+  { 
+    id: 'maplestory', 
+    name: 'Maplestory', 
+    type: 'image',
+    preview: '🍁',
+    extension: 'png'
+  },
 ];
 
 const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWallpaperChange }: WallpaperAppProps) => {
@@ -96,16 +103,6 @@ const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWa
               )}
             </div>
           ))}
-        </div>
-        <div className="wallpaper-info">
-          <p className="wallpaper-note">
-            <strong>Note:</strong> For image wallpapers, place your images in the <code>public</code> folder with these names:
-          </p>
-          <ul>
-            <li><code>landscape.jpg</code> - Green Hills Landscape</li>
-            <li><code>snow-leopard.jpg</code> - Snow Leopard</li>
-            <li><code>abstract-blue.png</code> - Abstract Blue</li>
-          </ul>
         </div>
       </div>
     </Window>

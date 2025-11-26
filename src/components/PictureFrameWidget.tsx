@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import Window from './apps/Window';
 import './PictureFrameWidget.css';
 
-const POSITION_KEY = 'picture-frame-position';
-
 const PictureFrameWidget = () => {
   const [visible, setVisible] = useState(true);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -11,24 +9,10 @@ const PictureFrameWidget = () => {
     return attr === 'dark' ? 'dark' : 'light';
   });
 
-  const [position, setPosition] = useState(() => {
-    const saved = localStorage.getItem(POSITION_KEY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (typeof parsed.x === 'number' && typeof parsed.y === 'number') {
-          return { x: parsed.x, y: parsed.y };
-        }
-      } catch (_) {
-        // ignore
-      }
-    }
-    return { x: 18, y: 200 };
-  });
+  const [position, setPosition] = useState({ x: 18, y: 200 });
 
   const handlePositionChange = (pos: { x: number; y: number }) => {
     setPosition(pos);
-    localStorage.setItem(POSITION_KEY, JSON.stringify(pos));
   };
 
   useEffect(() => {

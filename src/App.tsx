@@ -25,6 +25,7 @@ const wallpaperVariants: { [key: string]: { light: string; dark?: string } } = {
   'landscape': { light: 'landscape.png', dark: 'landscape-dark.png' },
   'snow-leopard': { light: 'snow-leopard.png', dark: 'snow-leopard-dark.png' },
   'abstract-blue': { light: 'abstract-blue.png', dark: 'abstract-blue-dark.png' },
+  'maplestory': { light: 'maplestory.png', dark: 'maplestory-dark.png' },
 };
 
 function App() {
@@ -49,30 +50,42 @@ function App() {
     applyWallpaper(currentWallpaper, theme);
   }, [currentWallpaper, theme]);
 
+  useEffect(() => {
+    const handleResize = () => applyWallpaper(currentWallpaper, theme);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [currentWallpaper, theme]);
+
   const buildWallpaperCandidates = (wallpaperId: string, activeTheme: 'light' | 'dark') => {
     const variant = wallpaperVariants[wallpaperId];
-    const primary = activeTheme === 'dark' ? variant?.dark ?? variant?.light : variant?.light;
-    const fallbackTheme = activeTheme === 'dark' ? variant?.light : undefined;
-
-    // Generate fallbacks for both extensions and -dark suffix
     const baseExts = ['png', 'jpg', 'jpeg'];
-    const generated = [
-      ...baseExts.map((ext) => `${wallpaperId}${activeTheme === 'dark' ? '-dark' : ''}.${ext}`),
-      ...baseExts.map((ext) => `${wallpaperId}.${ext}`),
-    ];
 
-    const candidates = [primary, fallbackTheme, ...generated].filter(Boolean) as string[];
+    if (activeTheme === 'dark') {
+      const primary = variant?.dark;
+      const generatedDark = baseExts.map((ext) => `${wallpaperId}-dark.${ext}`);
+      // Only fall back to light assets if no dark filenames exist at all
+      const generatedLight = primary ? [] : baseExts.map((ext) => `${wallpaperId}.${ext}`);
+      const candidates = [primary, ...generatedDark, ...generatedLight].filter(Boolean) as string[];
+      return Array.from(new Set(candidates)).map((file) => `/${file}`);
+    }
+
+    // Light mode: prefer light assets and neutral names only
+    const primary = variant?.light;
+    const generatedLight = baseExts.map((ext) => `${wallpaperId}.${ext}`);
+    const candidates = [primary, ...generatedLight].filter(Boolean) as string[];
     return Array.from(new Set(candidates)).map((file) => `/${file}`);
   };
 
   const applyWallpaper = (wallpaperId: string, activeTheme: 'light' | 'dark') => {
     const body = document.body;
     const paths = buildWallpaperCandidates(wallpaperId, activeTheme);
+    // Aggressive zoom on narrow viewports so the image fills the entire screen
+    const zoomSize = window.innerWidth <= 900 ? '200%' : '110%';
 
     body.style.background = '';
     body.style.backgroundImage = paths.map((p) => `url(${p})`).join(', ');
-    // Slight zoom to obscure corner watermarks
-    body.style.backgroundSize = '110%';
+    // Slight zoom to obscure corner watermarks; stronger zoom on mobile
+    body.style.backgroundSize = zoomSize;
     body.style.backgroundPosition = 'center center';
     body.style.backgroundAttachment = 'fixed';
     body.style.backgroundRepeat = 'no-repeat';
