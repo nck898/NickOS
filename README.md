@@ -2,7 +2,8 @@
 
 A retro Y2K-inspired web operating system built with React and TypeScript. Inspired by both RyoOS and PostHog's website, this was built with Cursor, Codex, and my own codin skills :)
 
-![NickOS Screenshot](./dist/NickOS_screenshot.png)
+<img width="1778" height="982" alt="NickOS_screenshot" src="https://github.com/user-attachments/assets/13f4d3ec-08db-4ad1-b408-1f56a16dd5d5" />
+
 
 ## Features
 
