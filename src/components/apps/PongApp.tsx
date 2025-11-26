@@ -4,9 +4,11 @@ import './PongApp.css';
 
 interface PongAppProps {
   onClose: () => void;
+  onMinimize?: () => void;
+  isMinimized?: boolean;
 }
 
-const PongApp = ({ onClose }: PongAppProps) => {
+const PongApp = ({ onClose, onMinimize, isMinimized }: PongAppProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState({ player: 0, ai: 0 });
   const [gameState, setGameState] = useState<'menu' | 'playing' | 'paused'>('menu');
@@ -174,7 +176,7 @@ const PongApp = ({ onClose }: PongAppProps) => {
   }, [ball, playerPaddle, aiPaddle, score, gameState]);
 
   return (
-    <Window title="Pong" icon="🎮" onClose={onClose} initialWidth={700} initialHeight={500}>
+    <Window title="Pong" icon="🎮" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={700} initialHeight={500}>
       <div className="pong-app">
         {gameState === 'menu' && (
           <div className="pong-menu">

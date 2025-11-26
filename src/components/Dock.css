@@ -12,9 +12,9 @@
 .dock-container {
   display: flex;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--glass-bg);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid var(--glass-border);
   border-radius: 20px;
   padding: 8px 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
@@ -63,6 +63,26 @@
   -webkit-font-smoothing: none;
   font-smooth: never;
   text-rendering: optimizeSpeed;
+}
+
+@media (max-width: 900px) {
+  .dock {
+    left: 0;
+    right: 0;
+    transform: none;
+  }
+  .dock-container {
+    margin: 0 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .dock-icon {
+    width: 42px;
+    height: 42px;
+  }
+  .dock-icon-image {
+    font-size: 30px;
+  }
 }
 
 .dock-icon:hover .dock-icon-image {

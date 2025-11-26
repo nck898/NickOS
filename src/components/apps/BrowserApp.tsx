@@ -4,6 +4,8 @@ import './BrowserApp.css';
 
 interface BrowserAppProps {
   onClose: () => void;
+  onMinimize?: () => void;
+  isMinimized?: boolean;
 }
 
 type HistoryEntry = {
@@ -12,7 +14,7 @@ type HistoryEntry = {
 
 const DEFAULT_URL = 'https://www.nyan.cat/';
 
-const BrowserApp = ({ onClose }: BrowserAppProps) => {
+const BrowserApp = ({ onClose, onMinimize, isMinimized }: BrowserAppProps) => {
   const [address, setAddress] = useState(DEFAULT_URL);
   const [currentUrl, setCurrentUrl] = useState(DEFAULT_URL);
   const [history, setHistory] = useState<HistoryEntry[]>([{ url: DEFAULT_URL }]);
@@ -79,6 +81,8 @@ const BrowserApp = ({ onClose }: BrowserAppProps) => {
       title="Safari"
       icon="🧭"
       onClose={onClose}
+      onMinimize={onMinimize}
+      isMinimized={isMinimized}
       initialWidth={960}
       initialHeight={720}
     >

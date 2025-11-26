@@ -3,9 +3,9 @@
   grid-template-columns: 2fr 1fr;
   gap: 16px;
   height: 100%;
-  background: linear-gradient(180deg, #f7f9ff 0%, #dce4f5 100%);
+  background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
   padding: 12px;
-  border: 1px solid #9aa7c4;
+  border: 1px solid var(--panel-border);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
   font-family: 'Verdana', 'Geneva', sans-serif;
 }
@@ -20,7 +20,7 @@
   position: relative;
   flex: 1;
   background: radial-gradient(circle at 20% 20%, #ffffff, #d7dfee 70%);
-  border: 2px solid #7f8a9f;
+  border: 2px solid var(--panel-border);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -75,8 +75,8 @@
 }
 
 .controls {
-  background: linear-gradient(180deg, #e8edf8 0%, #cdd7eb 100%);
-  border: 1px solid #9aa7c4;
+  background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
+  border: 1px solid var(--panel-border);
   border-radius: 10px;
   padding: 10px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -93,10 +93,10 @@
 }
 
 .effect-chip {
-  border: 1px solid #7f8a9f;
+  border: 1px solid var(--panel-border);
   border-radius: 8px;
   padding: 8px;
-  background: linear-gradient(180deg, #ffffff 0%, #d7deec 100%);
+  background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
   cursor: pointer;
   font-size: 12px;
   color: #1f3b63;
@@ -129,8 +129,8 @@
 }
 
 .film-strip {
-  background: linear-gradient(180deg, #fdfefe 0%, #e8edf8 100%);
-  border: 1px solid #9aa7c4;
+  background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
+  border: 1px solid var(--panel-border);
   border-radius: 12px;
   padding: 12px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -214,5 +214,24 @@
 @media (max-width: 1000px) {
   .photo-studio {
     grid-template-columns: 1fr;
+  }
+  .film-strip {
+    order: 2;
+  }
+  .camera-pane {
+    order: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .controls {
+    flex-direction: column;
+  }
+  .warp-previews {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  .shutter {
+    width: 100%;
+    text-align: center;
   }
 }

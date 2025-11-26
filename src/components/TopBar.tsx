@@ -9,35 +9,36 @@ interface MenuItem {
 
 interface TopBarProps {
   onShowAbout: () => void;
+  theme: 'light' | 'dark';
+  onToggleTheme: () => void;
 }
 
-const TopBar = ({ onShowAbout }: TopBarProps) => {
+const TopBar = ({ onShowAbout, theme, onToggleTheme }: TopBarProps) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   const menuItems: { [key: string]: MenuItem[] } = {
     'NickOS': [
       { label: 'About NickOS', action: onShowAbout },
-      { label: 'Preferences...', action: () => alert('Preferences coming soon!') },
+      { label: 'Preferences...', action: () => alert('Who cares about your preferences? :P') },
       { label: '---' },
-      { label: 'Quit', action: () => window.close() },
     ],
     'File': [
-      { label: 'New Folder', action: () => alert('New folder created!') },
-      { label: 'New File', action: () => alert('New file created!') },
+      { label: 'New Folder'},
+      { label: 'New File'},
       { label: '---' },
-      { label: 'Get Info', action: () => alert('Info: This is NickOS!') },
+      { label: 'Get Info', action: () => alert('Info: This is NickOS what more info do you need?') },
     ],
     'Edit': [
-      { label: 'Undo', action: () => alert('Undo!') },
-      { label: 'Redo', action: () => alert('Redo!') },
+      { label: 'Undo'},
+      { label: 'Redo'},
       { label: '---' },
-      { label: 'Cut', action: () => alert('Cut!') },
-      { label: 'Copy', action: () => alert('Copy!') },
-      { label: 'Paste', action: () => alert('Paste!') },
+      { label: 'Cut'},
+      { label: 'Copy'},
+      { label: 'Paste'},
     ],
     'View': [
-      { label: 'Show View Options', action: () => alert('View options!') },
-      { label: 'Clean Up', action: () => alert('Desktop cleaned!') },
+      { label: 'Show View Options', action: () => alert('Umm this is awkward, theres no view options...') },
+      { label: 'Clean Up', action: () => alert('Desktop is cleaned! Jk, theres nothing to clean up') },
     ],
   };
 
@@ -85,6 +86,9 @@ const TopBar = ({ onShowAbout }: TopBarProps) => {
         ))}
       </div>
       <div className="topbar-right">
+        <button className="theme-toggle" onClick={onToggleTheme}>
+          {theme === 'light' ? '☀️ Light' : '🌙 Dark'}
+        </button>
         <div className="time-display">
           {new Date().toLocaleTimeString('en-US', { 
             hour: '2-digit', 

@@ -3,11 +3,14 @@ import './TrashApp.css';
 
 interface TrashAppProps {
   onClose: () => void;
+  onMinimize?: () => void;
+  isMinimized?: boolean;
+  onRestore?: () => void;
 }
 
-const TrashApp = ({ onClose }: TrashAppProps) => {
+const TrashApp = ({ onClose, onMinimize, isMinimized }: TrashAppProps) => {
   return (
-    <Window title="Trash" icon="🗑️" onClose={onClose} initialWidth={500} initialHeight={400}>
+    <Window title="Trash" icon="🗑️" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={500} initialHeight={400}>
       <div className="trash-app">
         <div className="trash-icon-large">🗑️</div>
         <h2>Trash</h2>

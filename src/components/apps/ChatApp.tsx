@@ -13,6 +13,8 @@ interface ChatAppProps {
   onClose: () => void;
   messages: ChatMessage[];
   onSend: (text: string) => void;
+  onMinimize?: () => void;
+  isMinimized?: boolean;
 }
 
 const nickReplies = [
@@ -24,7 +26,7 @@ const nickReplies = [
   "Big mood. Let's make it weird and intentional.",
 ];
 
-const ChatApp = ({ onClose, messages, onSend }: ChatAppProps) => {
+const ChatApp = ({ onClose, messages, onSend, onMinimize, isMinimized }: ChatAppProps) => {
   const [input, setInput] = useState('');
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +45,7 @@ const ChatApp = ({ onClose, messages, onSend }: ChatAppProps) => {
   };
 
   return (
-    <Window title="Virtual Nick" icon="💬" onClose={onClose} initialWidth={640} initialHeight={520}>
+    <Window title="Virtual Nick" icon="💬" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={640} initialHeight={520}>
       <div className="chat-app">
         <div className="chat-header">
           <div className="nick-avatar">😎</div>

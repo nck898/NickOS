@@ -4,6 +4,8 @@ import './FLStudioApp.css';
 
 interface FLStudioAppProps {
   onClose: () => void;
+  onMinimize?: () => void;
+  isMinimized?: boolean;
 }
 
 type BeatType = 'lofi' | 'jazz' | 'hiphop' | 'drill';
@@ -69,7 +71,7 @@ type CellData = {
   note?: number; // MIDI note number (0-127), default to C4 (60) for melodic instruments
 };
 
-const FLStudioApp = ({ onClose }: FLStudioAppProps) => {
+const FLStudioApp = ({ onClose, onMinimize, isMinimized }: FLStudioAppProps) => {
   const [beatType, setBeatType] = useState<BeatType>('lofi');
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -671,7 +673,7 @@ const FLStudioApp = ({ onClose }: FLStudioAppProps) => {
   };
 
   return (
-    <Window title="FL Studio" icon="🎵" onClose={onClose} initialWidth={1000} initialHeight={800}>
+    <Window title="FL Studio" icon="🎵" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={1000} initialHeight={800}>
       <div className="flstudio-app">
         <div className="flstudio-header">
           <div className="beat-type-selector">
@@ -805,4 +807,3 @@ const FLStudioApp = ({ onClose }: FLStudioAppProps) => {
 };
 
 export default FLStudioApp;
-

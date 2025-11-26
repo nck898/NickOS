@@ -44,6 +44,7 @@ const Dock = ({ openApps, onOpenApp }: DockProps) => {
     { icon: '🧭', label: 'Safari', appName: 'browser' },
     { icon: '💬', label: 'Chat', appName: 'chat' },
     { icon: '📷', label: 'Photo Studio', appName: 'photostudio' },
+    { icon: '📝', label: 'Notes', appName: 'notes' },
     { icon: '🖼️', label: 'Wallpapers', appName: 'wallpaper' },
   ];
 

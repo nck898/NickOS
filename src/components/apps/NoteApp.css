@@ -1,0 +1,127 @@
+.notes-app {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  height: 100%;
+  background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
+  border: 1px solid var(--panel-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.notes-sidebar {
+  border-right: 1px solid #9aa7c4;
+  display: flex;
+  flex-direction: column;
+}
+
+.notes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: linear-gradient(180deg, var(--bar-start) 0%, var(--bar-end) 100%);
+  border-bottom: 1px solid var(--bar-border);
+}
+
+.note-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--text-strong);
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8), 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.note-list {
+  flex: 1;
+  overflow: auto;
+}
+
+.note-list-item {
+  padding: 10px 12px;
+  border-bottom: 1px solid #d3dbed;
+  cursor: pointer;
+}
+
+.note-list-item.active {
+  background: rgba(111, 131, 175, 0.15);
+}
+
+.note-title {
+  font-weight: bold;
+  color: var(--text-strong);
+}
+
+.note-updated {
+  font-size: 11px;
+  color: #607198;
+}
+
+.notes-editor {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 8px;
+}
+
+.note-title-input {
+  font-size: 20px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.note-toolbar {
+  display: flex;
+  gap: 6px;
+}
+
+.note-toolbar button {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--panel-border);
+  background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--text-strong);
+}
+
+.note-content {
+  flex: 1;
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 12px;
+  background: #fff;
+  overflow: auto;
+  min-height: 260px;
+}
+
+.empty-notes, .empty-editor {
+  text-align: center;
+  color: #607198;
+  padding: 16px;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .notes-app {
+    grid-template-columns: 1fr;
+  }
+  .notes-sidebar {
+    order: 2;
+  }
+  .notes-editor {
+    order: 1;
+  }
+  .notes-header h3 {
+    font-size: 14px;
+  }
+  .note-btn {
+    padding: 4px 8px;
+  }
+  .note-content {
+    min-height: 200px;
+  }
+}

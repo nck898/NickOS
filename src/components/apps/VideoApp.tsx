@@ -4,6 +4,8 @@ import './VideoApp.css';
 
 interface VideoAppProps {
   onClose: () => void;
+  onMinimize?: () => void;
+  isMinimized?: boolean;
 }
 
 // YouTube IFrame API types
@@ -32,18 +34,10 @@ const allVideos = [
   { id: 'loPphiJWhyY' },
   { id: 'o-s9oOJDB8U' },
   { id: 'RH1Ncu7UA9Q' },
-  { id: 'KCzwyFHSMdY' },
   { id: 'J8Pv3V1m7_A' },
-  { id: '0v8Oenh0vWA' },
-  { id: 'MdNFkKjvSLo' },
-  { id: '2dPVewSG3O0' },
   { id: 'rbgo95qYvoU' },
-  { id: 'CorNM4QG624' },
   { id: 'V60AzdCNLLY' },
-  { id: 'crfrKqFp0Zg' },
-  { id: 'GbItoJlfSyI' },
-  { id: '9Ffi3KDgV2w' },
-  { id: 'V3sQjiaM8YQ' },
+  { id: '0yCeduVJW9s' },
 ];
 
 // Shuffle function
@@ -56,7 +50,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return shuffled;
 };
 
-const VideoApp = ({ onClose }: VideoAppProps) => {
+const VideoApp = ({ onClose, onMinimize, isMinimized }: VideoAppProps) => {
   const [videos] = useState(() => shuffleArray(allVideos));
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -151,7 +145,7 @@ const VideoApp = ({ onClose }: VideoAppProps) => {
   };
 
   return (
-    <Window title="Nicktime Player" icon="🎬" onClose={onClose} initialWidth={800} initialHeight={600}>
+    <Window title="Nicktime Player" icon="🎬" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={800} initialHeight={600}>
       <div className="video-app">
         <div className="video-player">
           <div className="video-container">

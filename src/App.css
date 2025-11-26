@@ -8,9 +8,95 @@
   overflow: hidden;
 }
 
+body {
+  margin: 0;
+  transition: filter 0.35s ease, background-color 0.35s ease;
+  background-color: #e7ebf3;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  opacity: 0;
+}
+
+:root[data-theme='dark'] body {
+  /* Keep wallpapers natural in dark mode */
+  filter: none;
+  background-color: #0d0f14;
+}
+
+:root[data-theme='dark'] body::after {
+  background: radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.3), transparent 35%),
+              radial-gradient(circle at 80% 10%, rgba(0, 0, 0, 0.25), transparent 30%),
+              rgba(0, 0, 0, 0.25);
+  mix-blend-mode: normal;
+  opacity: 0.7;
+}
+
 .desktop-container {
   flex: 1;
   position: relative;
   overflow: hidden;
   padding: 20px;
+}
+
+.minimized-tray {
+  position: fixed;
+  right: 12px;
+  bottom: 14px;
+  display: flex;
+  gap: 8px;
+  z-index: 1200;
+}
+
+.tray-chip {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 900px) {
+  .app-container {
+    width: 100vw;
+    height: 100vh;
+  }
+  .desktop-container {
+    padding: 10px;
+  }
+}
+
+:root {
+  --panel-start: #f0f0f0;
+  --panel-end: #e0e0e0;
+  --panel-border: #9aa7c4;
+  --panel-strong-border: #999;
+  --bar-start: #4a90e2;
+  --bar-end: #357abd;
+  --bar-border: #2a5a8a;
+  --text-strong: #1f3b63;
+  --text-inverse: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.35);
+}
+
+:root[data-theme='dark'] {
+  --panel-start: #2c2f38;
+  --panel-end: #1f222b;
+  --panel-border: #4b556b;
+  --panel-strong-border: #5a6175;
+  --bar-start: #3d4f80;
+  --bar-end: #222d4d;
+  --bar-border: #1a2340;
+  --text-strong: #e6ecff;
+  --text-inverse: #f8f9ff;
+  --glass-bg: rgba(20, 24, 33, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.2);
 }

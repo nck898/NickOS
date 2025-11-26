@@ -4,6 +4,8 @@ import './PhotoStudioApp.css';
 
 interface PhotoStudioAppProps {
   onClose: () => void;
+  onMinimize?: () => void;
+  isMinimized?: boolean;
 }
 
 type Effect = {
@@ -44,7 +46,7 @@ const warpModes: WarpMode[] = [
   { id: 'tiltR', label: 'Tilt Right', cssTransform: 'skewX(8deg)' },
 ];
 
-const PhotoStudioApp = ({ onClose }: PhotoStudioAppProps) => {
+const PhotoStudioApp = ({ onClose, onMinimize, isMinimized }: PhotoStudioAppProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const warpPreviewRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -173,6 +175,8 @@ const PhotoStudioApp = ({ onClose }: PhotoStudioAppProps) => {
       title="Photo Studio"
       icon="📷"
       onClose={onClose}
+      onMinimize={onMinimize}
+      isMinimized={isMinimized}
       initialWidth={1100}
       initialHeight={800}
     >

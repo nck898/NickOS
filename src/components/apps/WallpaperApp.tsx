@@ -4,6 +4,8 @@ import './WallpaperApp.css';
 
 interface WallpaperAppProps {
   onClose: () => void;
+  onMinimize?: () => void;
+  isMinimized?: boolean;
   currentWallpaper: string;
   onWallpaperChange: (wallpaper: string) => void;
 }
@@ -40,7 +42,7 @@ const wallpapers: Wallpaper[] = [
   },
 ];
 
-const WallpaperApp = ({ onClose, currentWallpaper, onWallpaperChange }: WallpaperAppProps) => {
+const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWallpaperChange }: WallpaperAppProps) => {
   const [selectedWallpaper, setSelectedWallpaper] = useState(currentWallpaper);
 
   useEffect(() => {
@@ -72,7 +74,7 @@ const WallpaperApp = ({ onClose, currentWallpaper, onWallpaperChange }: Wallpape
   };
 
   return (
-    <Window title="Wallpapers" icon="🖼️" onClose={onClose} initialWidth={700} initialHeight={600}>
+    <Window title="Wallpapers" icon="🖼️" onClose={onClose} onMinimize={onMinimize} isMinimized={isMinimized} initialWidth={700} initialHeight={600}>
       <div className="wallpaper-app">
         <div className="wallpaper-header">
           <h3>Select a Wallpaper</h3>

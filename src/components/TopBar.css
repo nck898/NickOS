@@ -1,7 +1,7 @@
 .topbar {
-  height: 24px;
-  background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%);
-  border-bottom: 2px solid #2a5a8a;
+  height: 28px;
+  background: linear-gradient(180deg, var(--bar-start) 0%, var(--bar-end) 100%);
+  border-bottom: 2px solid var(--bar-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -73,8 +73,8 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background: linear-gradient(180deg, #f0f0f0 0%, #e0e0e0 100%);
-  border: 2px solid #999;
+  background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
+  border: 2px solid var(--panel-border);
   border-radius: 0 0 4px 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   min-width: 150px;
@@ -109,7 +109,7 @@
 }
 
 .dropdown-item:hover {
-  background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%);
+  background: linear-gradient(180deg, var(--bar-start) 0%, var(--bar-end) 100%);
   color: white;
 }
 
@@ -126,8 +126,19 @@
 }
 
 .time-display {
-  font-size: 11px;
+  font-size: 14px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   font-weight: bold;
   font-family: 'Courier New', monospace;
+}
+
+.theme-toggle {
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
+  color: var(--text-strong);
+  font-size: 11px;
+  cursor: pointer;
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.4), 0 1px 3px rgba(0, 0, 0, 0.25);
 }
