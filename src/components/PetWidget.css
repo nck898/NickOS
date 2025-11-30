@@ -1,0 +1,28 @@
+.pet-widget {
+  position: fixed;
+  bottom: 12px;
+  left: 24px;
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+  z-index: 1300;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.pet-sprite {
+  max-width: 100%;
+  max-height: 100%;
+  image-rendering: pixelated;
+  user-select: none;
+}
+
+@media (max-width: 900px) {
+  .pet-widget {
+    width: 90px;
+    height: 90px;
+    bottom: 8px;
+    left: 12px;
+  }
+}

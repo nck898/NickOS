@@ -17,6 +17,7 @@ import NoteApp from './components/apps/NoteApp';
 import WeatherWidget from './components/WeatherWidget';
 import PictureFrameWidget from './components/PictureFrameWidget';
 import MusicPlayerApp from './components/apps/MusicPlayerApp';
+import PetWidget from './components/PetWidget';
 import './App.css';
 
 export type AppName = 'trash' | 'video' | 'game' | 'flstudio' | 'wallpaper' | 'browser' | 'photostudio' | 'chat' | 'notes' | 'music';
@@ -35,15 +36,19 @@ function App() {
   const [currentWallpaper, setCurrentWallpaper] = useState<string>('landscape');
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [minimizedApps, setMinimizedApps] = useState<Set<AppName>>(new Set());
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  useEffect(() => {
+  const getInitialTheme = (): 'light' | 'dark' => {
+    if (typeof document === 'undefined') return 'light';
+    const attr = document.documentElement.getAttribute('data-theme');
+    if (attr === 'dark' || attr === 'light') return attr;
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setTheme(prefersDark ? 'dark' : 'light');
-  }, []);
+    return prefersDark ? 'dark' : 'light';
+  };
+
+  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme());
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('nickos-theme', theme);
   }, [theme]);
 
   useEffect(() => {
@@ -144,11 +149,16 @@ function App() {
 
   const toggleTheme = () => setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
 
+  useEffect(() => {
+    document.body.classList.remove('no-theme-transition');
+  }, []);
+
   return (
     <div className="app-container">
       <CursorTrail />
       <WeatherWidget />
       <PictureFrameWidget />
+      <PetWidget />
       <TopBar onShowAbout={() => setShowAbout(true)} theme={theme} onToggleTheme={toggleTheme} />
       <div className="desktop-container">
         <Desktop onOpenApp={handleOpenApp} />

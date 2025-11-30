@@ -53,6 +53,7 @@ const Window = ({
   const isResizingRef = useRef(false);
   const dragOffsetRef = useRef({ x: 0, y: 0 });
   const resizeStartRef = useRef({ x: 0, y: 0, width: initialWidth, height: initialHeight });
+  const resizeStartPosRef = useRef({ x: position.x, y: position.y });
   const resizeDirectionRef = useRef<string>('');
   const positionRef = useRef(position);
   const sizeRef = useRef(size);
@@ -97,6 +98,7 @@ const Window = ({
 
   const handleResizeMouseDown = (e: React.MouseEvent, direction: string) => {
     e.stopPropagation();
+    e.preventDefault();
     setIsResizing(true);
     isResizingRef.current = true;
     setResizeDirection(direction);
@@ -108,6 +110,7 @@ const Window = ({
       height: size.height,
     };
     resizeStartRef.current = startState;
+    resizeStartPosRef.current = { x: positionRef.current.x, y: positionRef.current.y };
   };
 
   useEffect(() => {
@@ -122,37 +125,42 @@ const Window = ({
       } else if (isResizingRef.current) {
         const deltaX = e.clientX - resizeStartRef.current.x;
         const deltaY = e.clientY - resizeStartRef.current.y;
-        
-        let newWidth = resizeStartRef.current.width;
-        let newHeight = resizeStartRef.current.height;
-        let newX = positionRef.current.x;
-        let newY = positionRef.current.y;
+
+        const startWidth = resizeStartRef.current.width;
+        const startHeight = resizeStartRef.current.height;
+        const startX = resizeStartPosRef.current.x;
+        const startY = resizeStartPosRef.current.y;
+
+        let newWidth = startWidth;
+        let newHeight = startHeight;
+        let newX = startX;
+        let newY = startY;
 
         if (resizeDirectionRef.current.includes('e')) {
-          newWidth = Math.max(MIN_WIDTH, resizeStartRef.current.width + deltaX);
+          newWidth = Math.max(MIN_WIDTH, startWidth + deltaX);
         }
         if (resizeDirectionRef.current.includes('w')) {
-          newWidth = Math.max(MIN_WIDTH, resizeStartRef.current.width - deltaX);
-          newX = positionRef.current.x + (resizeStartRef.current.width - newWidth);
+          newWidth = Math.max(MIN_WIDTH, startWidth - deltaX);
+          newX = startX + (startWidth - newWidth);
         }
         if (resizeDirectionRef.current.includes('s')) {
-          newHeight = Math.max(MIN_HEIGHT, resizeStartRef.current.height + deltaY);
+          newHeight = Math.max(MIN_HEIGHT, startHeight + deltaY);
         }
         if (resizeDirectionRef.current.includes('n')) {
-          newHeight = Math.max(MIN_HEIGHT, resizeStartRef.current.height - deltaY);
-          newY = positionRef.current.y + (resizeStartRef.current.height - newHeight);
+          newHeight = Math.max(MIN_HEIGHT, startHeight - deltaY);
+          newY = startY + (startHeight - newHeight);
         }
 
-        const boundedX = clamp(newX, 0, Math.max(0, window.innerWidth - newWidth));
-        const boundedY = clamp(newY, 0, Math.max(0, window.innerHeight - newHeight));
+        const boundedWidth = Math.min(newWidth, window.innerWidth);
+        const boundedHeight = Math.min(newHeight, window.innerHeight);
+        const boundedX = clamp(newX, 0, Math.max(0, window.innerWidth - boundedWidth));
+        const boundedY = clamp(newY, 0, Math.max(0, window.innerHeight - boundedHeight));
 
-        sizeRef.current = { width: newWidth, height: newHeight };
+        sizeRef.current = { width: boundedWidth, height: boundedHeight };
         positionRef.current = { x: boundedX, y: boundedY };
 
-        setSize(sizeRef.current);
-        if (resizeDirectionRef.current.includes('w') || resizeDirectionRef.current.includes('n')) {
-          setPosition(positionRef.current);
-        }
+        setSize({ ...sizeRef.current });
+        setPosition({ ...positionRef.current });
       }
     };
 

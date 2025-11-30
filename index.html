@@ -8,6 +8,20 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      (() => {
+        const saved = localStorage.getItem('nickos-theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const initial = saved === 'dark' || saved === 'light' ? saved : prefersDark ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', initial);
+        document.body.classList.add('no-theme-transition');
+        if (initial === 'dark') {
+          document.body.style.backgroundColor = '#0d0f14';
+        } else {
+          document.body.style.backgroundColor = '#e7ebf3';
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
