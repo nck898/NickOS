@@ -41,6 +41,7 @@ const Dock = ({ openApps, onOpenApp }: DockProps) => {
     { icon: '▶️', label: 'TV', appName: 'video' },
     { icon: '🎮', label: 'Games', appName: 'game' },
     { icon: '🎵', label: 'FL Studio', appName: 'flstudio' },
+    { icon: '🎧', label: 'Music', appName: 'music' },
     { icon: '🧭', label: 'Safari', appName: 'browser' },
     { icon: '💬', label: 'Chat', appName: 'chat' },
     { icon: '📷', label: 'Photo Studio', appName: 'photostudio' },

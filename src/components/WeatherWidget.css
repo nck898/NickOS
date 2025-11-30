@@ -9,7 +9,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   color: #fff;
-  font-family: 'Verdana', 'Geneva', sans-serif;
+  font-family: 'Courier New', 'Monaco', monospace;
   z-index: 900;
   max-width: 200px;
 }

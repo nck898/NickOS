@@ -4,7 +4,7 @@ import './Window.css';
 import { soundManager } from '../../utils/sounds';
 
 interface WindowProps {
-  title: string;
+  title?: string;
   icon: string;
   children: ReactNode;
   onClose: () => void;

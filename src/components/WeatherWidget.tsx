@@ -8,31 +8,30 @@ type WeatherData = {
   icon: string;
 };
 
+type DayPhase = 'dawn' | 'day' | 'dusk' | 'night';
+
 const weatherPhrases: Record<string, string[]> = {
   clear: [
-    'Beautiful sunny weather we’re having!',
-    'Sun’s out—time for pixel-perfect vibes.',
-    'Crystal clear skies—perfect for a walk.',
-    'Blue skies and good code.',
+    'Beautiful weather we’re having! :)',
+    'Sun’s out guns out!  (If only I had arms...)',
+    'Crystal clear skies, sweet as Apple Piee',
     'Bright day, bright ideas.',
-    'Sun-kissed and bug-free (hopefully).',
     'UV rays and FPS frames—both high.',
     'Perfect day to touch grass… or a keyboard.',
   ],
   partly: [
     'Soft clouds, cozy mood.',
     'A few clouds for ambience.',
-    'Patchy clouds, strong aesthetics.',
     'Sky shaders set to “medium clouds.”',
     'Half sunny, half cozy.',
     'Cloud cover: artisanal.',
     'Balanced lighting: nature’s LUT.',
   ],
   cloudy: [
-    'Overcast and over-caffeinated.',
+    'Overcast and over it.',
     'Cloud blanket engaged.',
     'Diffuse light—perfect for screens.',
-    'Clouds on, glare off.',
+    'Cloudy with a chance of...you know what idk.',
     'Moody skies, moody playlists.',
     'Great day for heads-down focus.',
   ],
@@ -52,11 +51,10 @@ const weatherPhrases: Record<string, string[]> = {
   ],
   rain: [
     'You should grab an umbrella!',
-    'Rainy day coding energy.',
+    'ITSRAINING.',
     'Rain rhythm = lo-fi beats.',
     'Wet outside, dry keyboard.',
-    'Perfect day for tea and commits.',
-    'Sky is in “refresh” mode.',
+    'heavy-rain.mp3',
   ],
   snow: [
     'Bundle up, retro friend.',
@@ -64,7 +62,6 @@ const weatherPhrases: Record<string, string[]> = {
     'Cozy season: enabled.',
     'Snow outside, warm code inside.',
     'Frosty world, toasty RAM.',
-    'Time for boots and breakpoints.',
   ],
   storm: [
     'Stormy skies—stay safe!',
@@ -100,9 +97,12 @@ const WeatherWidget = () => {
           .then((data) => {
             const temp = data?.current?.temperature_2m;
             const code = data?.current?.weather_code;
+            const timeString: string | undefined = data?.current?.time;
+            const hour = parseHour(timeString);
+            const dayPhase = getDayPhase(hour);
             if (typeof temp === 'number') {
               const tempF = Math.round((temp * 9) / 5 + 32);
-              const { icon, bucket } = mapCodeToIcon(code);
+              const { icon, bucket } = mapCodeToIcon(code, dayPhase);
               const phraseList = weatherPhrases[bucket] || weatherPhrases.unknown;
               const desc = phraseList[Math.floor(Math.random() * phraseList.length)];
               setWeather({ tempC: temp, tempF, desc, icon });
@@ -117,17 +117,38 @@ const WeatherWidget = () => {
     );
   }, []);
 
-  const mapCodeToIcon = (code: number | undefined): { icon: string; bucket: keyof typeof weatherPhrases } => {
-    if (code === undefined) return { icon: '🌤️', bucket: 'unknown' };
-    if ([0].includes(code)) return { icon: '☀️', bucket: 'clear' };
-    if ([1, 2].includes(code)) return { icon: '🌤️', bucket: 'partly' };
-    if ([3].includes(code)) return { icon: '⛅️', bucket: 'cloudy' };
+  const parseHour = (timeString?: string): number => {
+    const parsed = timeString && timeString.length >= 13 ? Number(timeString.slice(11, 13)) : NaN;
+    return Number.isFinite(parsed) ? parsed : new Date().getHours();
+  };
+
+  const getDayPhase = (hour: number): DayPhase => {
+    if (hour >= 5 && hour < 7) return 'dawn';
+    if (hour >= 7 && hour < 18) return 'day';
+    if (hour >= 18 && hour < 20) return 'dusk';
+    return 'night';
+  };
+
+  const mapCodeToIcon = (code: number | undefined, dayPhase: DayPhase): { icon: string; bucket: keyof typeof weatherPhrases } => {
+    if (code === undefined) return { icon: dayPhase === 'night' ? '🌙' : '🌤️', bucket: 'unknown' };
+    if ([0].includes(code)) return { icon: pickSkyIcon('clear', dayPhase), bucket: 'clear' };
+    if ([1, 2].includes(code)) return { icon: pickSkyIcon('partly', dayPhase), bucket: 'partly' };
+    if ([3].includes(code)) return { icon: pickSkyIcon('cloudy', dayPhase), bucket: 'cloudy' };
     if ([45, 48].includes(code)) return { icon: '🌫️', bucket: 'fog' };
-    if ([51, 53, 55, 56, 57].includes(code)) return { icon: '🌦️', bucket: 'drizzle' };
+    if ([51, 53, 55, 56, 57].includes(code)) return { icon: dayPhase === 'night' ? '🌧️' : '🌦️', bucket: 'drizzle' };
     if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return { icon: '🌧️', bucket: 'rain' };
     if ([71, 73, 75, 77, 85, 86].includes(code)) return { icon: '❄️', bucket: 'snow' };
     if ([95, 96, 99].includes(code)) return { icon: '⛈️', bucket: 'storm' };
-    return { icon: '🌤️', bucket: 'unknown' };
+    return { icon: dayPhase === 'night' ? '🌙' : '🌤️', bucket: 'unknown' };
+  };
+
+  const pickSkyIcon = (bucket: 'clear' | 'partly' | 'cloudy', dayPhase: DayPhase): string => {
+    if (dayPhase === 'dawn') return '🌅';
+    if (dayPhase === 'dusk') return '🌇';
+    if (dayPhase === 'night') return bucket === 'cloudy' ? '☁️' : '🌙';
+    if (bucket === 'clear') return '☀️';
+    if (bucket === 'partly') return '🌤️';
+    return '⛅️';
   };
 
   return (

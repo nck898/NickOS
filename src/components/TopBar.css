@@ -84,6 +84,7 @@
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
+  color: var(--text-strong);
 }
 
 @keyframes slideDown {
@@ -100,7 +101,7 @@
 .dropdown-item {
   padding: 6px 20px 6px 24px;
   cursor: pointer;
-  color: #333;
+  color: var(--text-strong);
   font-size: 12px;
   transition: background 0.1s;
   position: relative;
@@ -110,7 +111,7 @@
 
 .dropdown-item:hover {
   background: linear-gradient(180deg, var(--bar-start) 0%, var(--bar-end) 100%);
-  color: white;
+  color: var(--text-inverse);
 }
 
 .menu-divider {

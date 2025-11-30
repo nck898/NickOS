@@ -9,10 +9,10 @@ Test it out [here](https://nick-os.vercel.app/)
 ## Features
 
 - 🖥️ **Desktop Interface** - Clickable desktop icons for launching apps
-- 📊 **Top Menu Bar** - Classic menu bar with dropdown menus (NickOS, File, Edit, View)
-- 🎯 **Dock Bar** - Bottom dock with hover magnification effects (just like Mac OS!)
+- 📊 **Top Menu Bar** - Classic menu bar with dropdown menus
+- 🎯 **Dock Bar** - Bottom dock with hover magnification effects
 - 🗑️ **Trash App** - Empty your trash with style
-- 🎬 **Video Player** - Watch funny YouTube videos
+- 🎬 **Video Player** - Watch some classic Nick YouTube favorites
 - 🐍 **Snake Game** - Retro snake with keyboard controls
 
 
@@ -28,5 +28,3 @@ Test it out [here](https://nick-os.vercel.app/)
 ## License
 
 MIT
-
-Enjoy your retro computing experience! 🎉

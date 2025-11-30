@@ -24,21 +24,8 @@ const AboutModal = ({ onClose }: AboutModalProps) => {
           <button className="modal-close" onClick={onClose}>×</button>
         </div>
         <div className="modal-content">
-          <div className="about-gif">
-            <div
-              className="tenor-gif-embed"
-              data-postid="22650221"
-              data-share-method="host"
-              data-aspect-ratio="1"
-              data-width="100%"
-            >
-              <a href="https://tenor.com/view/dog-dance-gif-22650221">Dog Dance Sticker</a>
-              from <a href="https://tenor.com/search/dog-stickers">Dog Stickers</a>
-            </div>
-          </div>
           <div className="about-info">
             <p className="about-creator">Created by <strong>Young Chan</strong></p>
-            <p className="about-tagline">NickOS is a portal into Nick's Mind... and it's a work in progress.</p>
             <div className="about-specs">
               <div className="spec-item">
                 <span className="spec-label">💾 RAM:</span>
@@ -49,10 +36,6 @@ const AboutModal = ({ onClose }: AboutModalProps) => {
                 <span className="spec-value">1 Terabyte</span>
               </div>
               <div className="spec-item">
-                <span className="spec-label">🎨 Graphics:</span>
-                <span className="spec-value">8-bit Pixel Perfect</span>
-              </div>
-              <div className="spec-item">
                 <span className="spec-label">Github:</span>
                 <span className="spec-value">
                   <a href="https://github.com/nck898/NickOS" target="_blank" rel="noreferrer">
@@ -60,9 +43,6 @@ const AboutModal = ({ onClose }: AboutModalProps) => {
                   </a>
                 </span>
               </div>
-            </div>
-            <div className="about-date">
-              <p className="established-date">Established 11/25/25</p>
             </div>
           </div>
         </div>

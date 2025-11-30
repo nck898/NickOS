@@ -23,8 +23,8 @@
 }
 
 .about-modal {
-  background: linear-gradient(180deg, #f0f0f0 0%, #e0e0e0 100%);
-  border: 4px solid #333;
+  background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
+  border: 4px solid var(--panel-border);
   border-radius: 12px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5),
               inset 0 2px 4px rgba(255, 255, 255, 0.5);
@@ -51,12 +51,12 @@
 }
 
 .modal-header {
-  background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%);
+  background: linear-gradient(180deg, var(--bar-start) 0%, var(--bar-end) 100%);
   padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 12px;
-  border-bottom: 2px solid #2a5a8a;
+  border-bottom: 2px solid var(--bar-border);
   border-radius: 8px 8px 0 0;
 }
 
@@ -67,7 +67,7 @@
 
 .modal-header h2 {
   flex: 1;
-  color: white;
+  color: var(--text-inverse);
   font-size: 18px;
   font-weight: bold;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -100,19 +100,7 @@
 .modal-content {
   padding: 24px;
   text-align: center;
-}
-
-.about-gif {
-  width: 160px;
-  max-width: 60%;
-  margin: 0 auto 20px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-}
-
-.about-info {
-  color: #333;
+  color: var(--text-strong);
 }
 
 .about-creator {
@@ -120,19 +108,20 @@
   margin-bottom: 12px;
   font-weight: bold;
   font-family: 'Courier New', monospace;
+  color: var(--text-strong);
 }
 
 .about-tagline {
   font-size: 16px;
   margin-bottom: 24px;
-  color: #666;
+  color: var(--text-strong);
   font-style: italic;
   font-family: 'Courier New', monospace;
 }
 
 .about-specs {
-  background: white;
-  border: 2px solid #ccc;
+  background: var(--panel-start);
+  border: 2px solid var(--panel-border);
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 20px;
@@ -153,16 +142,16 @@
 
 .spec-label {
   font-weight: bold;
-  color: #333;
+  color: var(--text-strong);
 }
 
 .spec-value {
-  color: #666;
+  color: var(--text-strong);
 }
 
 .about-date {
-  background: white;
-  border: 2px solid #ccc;
+  background: var(--panel-start);
+  border: 2px solid var(--panel-border);
   border-radius: 8px;
   padding: 16px;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -171,7 +160,26 @@
 .established-date {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: var(--text-strong);
   font-family: 'Courier New', monospace;
   margin: 0;
+}
+
+:root[data-theme='dark'] .about-modal {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8),
+              inset 0 2px 4px rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme='dark'] .about-specs,
+:root[data-theme='dark'] .about-date {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.spec-value a {
+  color: var(--text-strong);
+  text-decoration: none;
+}
+
+.spec-value a:hover {
+  text-decoration: underline;
 }

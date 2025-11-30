@@ -24,13 +24,12 @@ const PictureFrameWidget = () => {
     return () => observer.disconnect();
   }, []);
 
-  const imageSrc = theme === 'dark' ? '/picture-frame-dark.png' : '/picture-frame.jpg';
+  const imageSrc = theme === 'dark' ? '/decor/picture-frame-dark.png' : '/decor/picture-frame.jpg';
 
   if (!visible) return null;
 
   return (
     <Window
-      title="Picture Frame"
       icon="🖼️"
       onClose={() => setVisible(false)}
       showMinimize={false}

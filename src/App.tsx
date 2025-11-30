@@ -16,20 +16,21 @@ import type { ChatMessage } from './components/apps/ChatApp';
 import NoteApp from './components/apps/NoteApp';
 import WeatherWidget from './components/WeatherWidget';
 import PictureFrameWidget from './components/PictureFrameWidget';
+import MusicPlayerApp from './components/apps/MusicPlayerApp';
 import './App.css';
 
-export type AppName = 'trash' | 'video' | 'game' | 'flstudio' | 'wallpaper' | 'browser' | 'photostudio' | 'chat' | 'notes';
+export type AppName = 'trash' | 'video' | 'game' | 'flstudio' | 'wallpaper' | 'browser' | 'photostudio' | 'chat' | 'notes' | 'music';
 
 // Wallpaper variants for light/dark; add your dark-mode assets in /public with these names
 const wallpaperVariants: { [key: string]: { light: string; dark?: string } } = {
-  'landscape': { light: 'landscape.png', dark: 'landscape-dark.png' },
-  'snow-leopard': { light: 'snow-leopard.png', dark: 'snow-leopard-dark.png' },
-  'abstract-blue': { light: 'abstract-blue.png', dark: 'abstract-blue-dark.png' },
-  'maplestory': { light: 'maplestory.png', dark: 'maplestory-dark.png' },
+  'landscape': { light: 'wallpapers/landscape.jpg', dark: 'wallpapers/landscape-dark.png' },
+  'snow-leopard': { light: 'wallpapers/snow-leopard.jpg', dark: 'wallpapers/snow-leopard-dark.png' },
+  'abstract-blue': { light: 'wallpapers/abstract-blue.png', dark: 'wallpapers/abstract-blue-dark.png' },
+  'maplestory': { light: 'wallpapers/maplestory.png', dark: 'wallpapers/maplestory-dark.png' },
 };
 
 function App() {
-  const [openApps, setOpenApps] = useState<AppName[]>([]);
+  const [openApps, setOpenApps] = useState<AppName[]>(['music']);
   const [showAbout, setShowAbout] = useState(false);
   const [currentWallpaper, setCurrentWallpaper] = useState<string>('landscape');
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
@@ -62,16 +63,16 @@ function App() {
 
     if (activeTheme === 'dark') {
       const primary = variant?.dark;
-      const generatedDark = baseExts.map((ext) => `${wallpaperId}-dark.${ext}`);
+      const generatedDark = baseExts.map((ext) => `wallpapers/${wallpaperId}-dark.${ext}`);
       // Only fall back to light assets if no dark filenames exist at all
-      const generatedLight = primary ? [] : baseExts.map((ext) => `${wallpaperId}.${ext}`);
+      const generatedLight = primary ? [] : baseExts.map((ext) => `wallpapers/${wallpaperId}.${ext}`);
       const candidates = [primary, ...generatedDark, ...generatedLight].filter(Boolean) as string[];
       return Array.from(new Set(candidates)).map((file) => `/${file}`);
     }
 
     // Light mode: prefer light assets and neutral names only
     const primary = variant?.light;
-    const generatedLight = baseExts.map((ext) => `${wallpaperId}.${ext}`);
+    const generatedLight = baseExts.map((ext) => `wallpapers/${wallpaperId}.${ext}`);
     const candidates = [primary, ...generatedLight].filter(Boolean) as string[];
     return Array.from(new Set(candidates)).map((file) => `/${file}`);
   };
@@ -190,6 +191,25 @@ function App() {
               );
             case 'notes':
               return <NoteApp key={appName} onClose={() => handleCloseApp(appName)} onMinimize={() => handleMinimize(appName)} isMinimized={minimizedApps.has(appName)} />;
+            case 'music':
+              return (
+                <MusicPlayerApp
+                  key={appName}
+                  onClose={() => handleCloseApp(appName)}
+                  onMinimize={() => handleMinimize(appName)}
+                  isMinimized={minimizedApps.has(appName)}
+                  initialX={
+                    typeof window !== 'undefined'
+                      ? Math.max(12, window.innerWidth - 300 - 24)
+                      : 100
+                  }
+                  initialY={
+                    typeof window !== 'undefined'
+                      ? Math.max(12, window.innerHeight - 520 - 96)
+                      : 100
+                  }
+                />
+              );
             default:
               return null;
           }

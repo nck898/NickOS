@@ -51,10 +51,10 @@ const wallpapers: Wallpaper[] = [
 ];
 
 const wallpaperVariants: { [key: string]: { light: string; dark?: string } } = {
-  'landscape': { light: 'landscape.png', dark: 'landscape-dark.png' },
-  'snow-leopard': { light: 'snow-leopard.png', dark: 'snow-leopard-dark.png' },
-  'abstract-blue': { light: 'abstract-blue.png', dark: 'abstract-blue-dark.png' },
-  'maplestory': { light: 'maplestory.png', dark: 'maplestory-dark.png' },
+  'landscape': { light: 'wallpapers/landscape.jpg', dark: 'wallpapers/landscape-dark.png' },
+  'snow-leopard': { light: 'wallpapers/snow-leopard.jpg', dark: 'wallpapers/snow-leopard-dark.png' },
+  'abstract-blue': { light: 'wallpapers/abstract-blue.png', dark: 'wallpapers/abstract-blue-dark.png' },
+  'maplestory': { light: 'wallpapers/maplestory.png', dark: 'wallpapers/maplestory-dark.png' },
 };
 
 const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWallpaperChange, theme = 'light' }: WallpaperAppProps) => {
@@ -76,9 +76,9 @@ const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWa
     const themedBase = theme === 'dark' ? variant?.dark : variant?.light;
     const candidates: string[] = [];
     if (themedBase) candidates.push(themedBase);
-    candidates.push(`${wallpaper.id}.${baseExt}`);
-    exts.forEach((ext) => candidates.push(`${wallpaper.id}-${theme}.${ext}`));
-    exts.forEach((ext) => candidates.push(`${wallpaper.id}.${ext}`));
+    candidates.push(`wallpapers/${wallpaper.id}.${baseExt}`);
+    exts.forEach((ext) => candidates.push(`wallpapers/${wallpaper.id}-${theme}.${ext}`));
+    exts.forEach((ext) => candidates.push(`wallpapers/${wallpaper.id}.${ext}`));
     return Array.from(new Set(candidates));
   };
 

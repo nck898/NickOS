@@ -37,6 +37,7 @@ const Desktop = ({ onOpenApp }: DesktopProps) => {
     { icon: '🧭', label: 'Safari', appName: 'browser' },
     { icon: '💬', label: 'Chat', appName: 'chat' },
     { icon: '🖼️', label: 'Wallpapers', appName: 'wallpaper' },
+    { icon: '🎧', label: 'Music', appName: 'music' },
   ];
 
   return (
