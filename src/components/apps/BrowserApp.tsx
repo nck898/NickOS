@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Window from './Window';
 import './BrowserApp.css';
+import BrowserAppNote from './BrowserAppNote';
 
 interface BrowserAppProps {
   onClose: () => void;
@@ -12,7 +13,7 @@ type HistoryEntry = {
   url: string;
 };
 
-const DEFAULT_URL = 'https://www.nyan.cat/';
+const DEFAULT_URL = 'https://nick-os.vercel.app/';
 
 const BrowserApp = ({ onClose, onMinimize, isMinimized }: BrowserAppProps) => {
   const [address, setAddress] = useState(DEFAULT_URL);
@@ -20,10 +21,21 @@ const BrowserApp = ({ onClose, onMinimize, isMinimized }: BrowserAppProps) => {
   const [history, setHistory] = useState<HistoryEntry[]>([{ url: DEFAULT_URL }]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [showNote, setShowNote] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     setIsLoading(true);
+  }, [currentUrl]);
+
+  useEffect(() => {
+    if (currentUrl.startsWith('https://nick-os.vercel.app')) {
+      setShowNote(true);
+      const timer = window.setTimeout(() => setShowNote(false), 5000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowNote(false);
+    }
   }, [currentUrl]);
 
   const navigateTo = (url: string) => {
@@ -71,9 +83,9 @@ const BrowserApp = ({ onClose, onMinimize, isMinimized }: BrowserAppProps) => {
   };
 
   const bookmarks = [
+    { label: 'NickOS', url: 'https://nick-os.vercel.app/' },
     { label: 'Nyan Cat', url: 'https://www.nyan.cat/' },
     { label: 'Wikipedia', url: 'https://wikipedia.org' },
-    { label: 'Example', url: 'https://example.com' },
   ];
 
   return (
@@ -121,6 +133,7 @@ const BrowserApp = ({ onClose, onMinimize, isMinimized }: BrowserAppProps) => {
           </div>
         </div>
         <div className="browser-frame">
+          <BrowserAppNote visible={showNote && currentUrl.startsWith('https://nick-os.vercel.app')} />
           <iframe
             ref={iframeRef}
             src={currentUrl}
