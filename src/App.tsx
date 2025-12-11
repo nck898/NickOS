@@ -15,7 +15,6 @@ import ChatApp, { generateNickReply } from './components/apps/ChatApp';
 import type { ChatMessage } from './components/apps/ChatApp';
 import NoteApp from './components/apps/NoteApp';
 import WeatherWidget from './components/WeatherWidget';
-import PictureFrameWidget from './components/PictureFrameWidget';
 import MusicPlayerApp from './components/apps/MusicPlayerApp';
 import PetWidget from './components/PetWidget';
 import './App.css';
@@ -157,7 +156,6 @@ function App() {
     <div className="app-container">
       <CursorTrail />
       <WeatherWidget />
-      <PictureFrameWidget />
       <PetWidget />
       <TopBar onShowAbout={() => setShowAbout(true)} theme={theme} onToggleTheme={toggleTheme} />
       <div className="desktop-container">
