@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode, useCallback, type MouseEvent as ReactMouseEvent } from 'react';
 import './Dock.css';
 import type { AppName } from '../App';
 
@@ -7,20 +7,23 @@ interface DockIconProps {
   label: string;
   onClick: () => void;
   isOpen: boolean;
+  scale: number;
+  lift: number;
+  setRef: (node: HTMLDivElement | null) => void;
 }
 
-const DockIcon = ({ icon, label, onClick, isOpen }: DockIconProps) => {
+const DockIcon = ({ icon, label, onClick, isOpen, scale, lift, setRef }: DockIconProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
+      ref={setRef}
       className={`dock-icon ${isOpen ? 'open' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
       style={{
-        transform: isHovered ? 'scale(1.5) translateY(-10px)' : 'scale(1)',
-        transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        transform: `translateY(${lift}px) scale(${scale})`,
       }}
     >
       <div className="dock-icon-image">{icon}</div>
@@ -48,9 +51,53 @@ const Dock = ({ openApps, onOpenApp }: DockProps) => {
     { icon: '🖼️', label: 'Wallpaper', appName: 'wallpaper' },
   ];
 
+  const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [mouseX, setMouseX] = useState<number | null>(null);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleMouseMove = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
+    setMouseX(e.clientX);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setMouseX(null);
+    setIsHovering(false);
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovering(true);
+  }, []);
+
+  const computeTransform = useCallback(
+    (index: number) => {
+      if (mouseX === null) return { scale: 1, lift: 0 };
+      const iconEl = iconRefs.current[index];
+      const rect = iconEl?.getBoundingClientRect();
+      if (!rect) return { scale: 1, lift: 0 };
+
+      const centerX = rect.left + rect.width / 2;
+      const distance = Math.abs(mouseX - centerX);
+      const influenceRadius = 110;
+      const peakScale = 2;
+      const falloff = Math.max(0, 1 - distance / influenceRadius);
+      const eased = Math.pow(falloff, 2.2);
+      const scale = 1 + eased * (peakScale - 1);
+      const lift = -14 * eased;
+      return { scale, lift };
+    },
+    [mouseX]
+  );
+
+  const transforms = dockItems.map((_, idx) => computeTransform(idx));
+
   return (
     <div className="dock">
-      <div className="dock-container">
+      <div
+        className={`dock-container ${isHovering ? 'expanded' : ''}`}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onMouseEnter={handleMouseEnter}
+      >
         {dockItems.map((item, index) => (
           <DockIcon
             key={index}
@@ -58,6 +105,11 @@ const Dock = ({ openApps, onOpenApp }: DockProps) => {
             label={item.label}
             onClick={() => onOpenApp(item.appName)}
             isOpen={openApps.includes(item.appName)}
+            scale={transforms[index].scale}
+            lift={transforms[index].lift}
+            setRef={(node) => {
+              iconRefs.current[index] = node;
+            }}
           />
         ))}
       </div>

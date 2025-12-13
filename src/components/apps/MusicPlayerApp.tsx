@@ -29,6 +29,18 @@ const tracks = [
     cover: '/music/covers/easy.png',
     src: '/music/audio/Mac_Ayres-Easy.mp3',
   },
+  {
+    title: "Let's Stay Together",
+    artist: 'Al Green',
+    cover: '/music/covers/al_green.png',
+    src: "/music/audio/Al_Green-Let's_Stay_Together.mp3",
+  },
+  {
+    title: "It's Just Begun",
+    artist: 'The Jimmy Castor Bunch',
+    cover: '/music/covers/Jimmy_Castor.png',
+    src: "/music/audio/The_Jimmy_Castor_Bunch-It's_Just_Begun.mp3",
+  },
 ] as const;
 
 const MusicPlayerApp = ({ onClose, onMinimize, isMinimized, initialX, initialY }: MusicPlayerAppProps) => {
