@@ -5,7 +5,7 @@ import { soundManager } from '../../utils/sounds';
 
 interface WindowProps {
   title?: string;
-  icon: string;
+  icon: ReactNode;
   children: ReactNode;
   onClose: () => void;
   onMinimize?: (state: { x: number; y: number; width: number; height: number }) => void;

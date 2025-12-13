@@ -15,44 +15,39 @@ interface Wallpaper {
   id: string;
   name: string;
   type: 'image';
-  preview?: string;
   extension?: string;
 }
 
 const wallpapers: Wallpaper[] = [
   { 
-    id: 'landscape', 
-    name: 'Green Hills Landscape', 
+    id: 'landscape',
+    name: 'Windows XP - Bliss',
     type: 'image',
-    preview: '🌄',
-    extension: 'jpg'
+    extension: 'webp'
   },
   { 
-    id: 'snow-leopard', 
-    name: 'Snow Leopard', 
+    id: 'follow',
+    name: 'Follow',
     type: 'image',
-    preview: '🐆',
-    extension: 'jpg'
+    extension: 'png'
   },
   { 
     id: 'abstract-blue', 
     name: 'Abstract Blue', 
     type: 'image',
-    preview: '💙',
     extension: 'png'
   },
   { 
     id: 'maplestory', 
-    name: 'Maplestory', 
+    name: 'Maplestory',
     type: 'image',
-    preview: '🍁',
     extension: 'png'
   },
 ];
 
 const wallpaperVariants: { [key: string]: { light: string; dark?: string } } = {
-  'landscape': { light: 'wallpapers/landscape.jpg', dark: 'wallpapers/landscape-dark.png' },
-  'snow-leopard': { light: 'wallpapers/snow-leopard.jpg', dark: 'wallpapers/snow-leopard-dark.png' },
+  'landscape': { light: 'wallpapers/landscape.webp', dark: 'wallpapers/landscape-dark.png' },
+  'follow': { light: 'wallpapers/follow.png', dark: 'wallpapers/follow-dark.jpg' },
   'abstract-blue': { light: 'wallpapers/abstract-blue.png', dark: 'wallpapers/abstract-blue-dark.png' },
   'maplestory': { light: 'wallpapers/maplestory.png', dark: 'wallpapers/maplestory-dark.png' },
 };
@@ -71,7 +66,7 @@ const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWa
 
   const buildPreviewCandidates = (wallpaper: Wallpaper) => {
     const variant = wallpaperVariants[wallpaper.id];
-    const exts = ['png', 'jpg', 'jpeg'];
+    const exts = ['png', 'jpg', 'jpeg', 'webp'];
     const baseExt = wallpaper.extension || 'jpg';
     const themedBase = theme === 'dark' ? variant?.dark : variant?.light;
     const candidates: string[] = [];
@@ -103,9 +98,6 @@ const WallpaperApp = ({ onClose, onMinimize, isMinimized, currentWallpaper, onWa
           alt={wallpaper.name}
           onError={handleError}
         />
-        <div className="wallpaper-preview-placeholder">
-          {wallpaper.preview}
-        </div>
       </div>
     );
   };

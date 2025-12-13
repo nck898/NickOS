@@ -126,7 +126,7 @@ const TopBar = ({ onShowAbout, theme, onToggleTheme }: TopBarProps) => {
   return (
     <div className="topbar">
       <div className="topbar-left" ref={topLeftRef}>
-        <div className="apple-logo" onClick={onShowAbout}>🍎</div>
+        <div className="apple-logo" onClick={onShowAbout}>👋</div>
         {Object.keys(menuItems).map((menuName) => (
           <div key={menuName} className="menu-item">
             <button

@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import './Desktop.css';
 import type { AppName } from '../App';
 
 interface DesktopIconProps {
-  icon: string;
+  icon: ReactNode;
   label: string;
   onClick: () => void;
 }
@@ -32,11 +32,10 @@ interface DesktopProps {
 }
 
 const Desktop = ({ onOpenApp }: DesktopProps) => {
-  const icons: { icon: string; label: string; appName: AppName }[] = [
-    { icon: '▶️', label: 'TV', appName: 'video' },
-    { icon: '🧭', label: 'Safari', appName: 'browser' },
-    { icon: '💬', label: 'Chat', appName: 'chat' },
-    { icon: '🖼️', label: 'Wallpapers', appName: 'wallpaper' },
+  const icons: { icon: ReactNode; label: string; appName: AppName }[] = [
+    { icon: '▶️', label: 'Video Player', appName: 'video' },
+    { icon: <img src="/icons/internet-explorer.png" alt="Internet Explorer" />, label: 'Internet Explorer', appName: 'browser' },
+    { icon: '🖼️', label: 'Wallpaper', appName: 'wallpaper' },
     { icon: '🎧', label: 'Music', appName: 'music' },
   ];
 

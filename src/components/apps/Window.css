@@ -66,6 +66,14 @@
   image-rendering: crisp-edges;
 }
 
+.window-icon img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+  image-rendering: pixelated;
+}
+
 .window-title {
   font-family: 'Courier New', monospace;
   font-weight: bold;

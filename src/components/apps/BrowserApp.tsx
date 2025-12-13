@@ -14,6 +14,7 @@ type HistoryEntry = {
 };
 
 const DEFAULT_URL = 'https://nick-os.vercel.app/';
+const IE_ICON_SRC = '/icons/internet-explorer.png';
 
 const BrowserApp = ({ onClose, onMinimize, isMinimized }: BrowserAppProps) => {
   const [address, setAddress] = useState(DEFAULT_URL);
@@ -90,8 +91,8 @@ const BrowserApp = ({ onClose, onMinimize, isMinimized }: BrowserAppProps) => {
 
   return (
     <Window
-      title="Safari"
-      icon="🧭"
+      title="Internet Explorer"
+      icon={<img src={IE_ICON_SRC} alt="Internet Explorer" />}
       onClose={onClose}
       onMinimize={onMinimize}
       isMinimized={isMinimized}

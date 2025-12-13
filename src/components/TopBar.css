@@ -1,12 +1,12 @@
 .topbar {
-  height: 28px;
+  height: 49px;
   background: linear-gradient(180deg, var(--bar-start) 0%, var(--bar-end) 100%);
-  border-bottom: 2px solid var(--bar-border);
+  border-bottom: 4px solid var(--bar-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 8px;
-  font-size: 12px;
+  padding: 0 14px;
+  font-size: 17px;
   color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   z-index: 1000;
@@ -19,12 +19,12 @@
 .topbar-left {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 7px;
 }
 
 .apple-logo {
-  font-size: 16px;
-  margin-right: 8px;
+  font-size: 21px;
+  margin-right: 12px;
   cursor: pointer;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5))
           contrast(1.2)
@@ -50,9 +50,9 @@
   background: transparent;
   border: none;
   color: white;
-  padding: 2px 8px;
+  padding: 4px 14px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 17px;
   font-family: 'Courier New', 'Monaco', monospace;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   transition: background 0.2s;
@@ -99,10 +99,10 @@
 }
 
 .dropdown-item {
-  padding: 6px 20px 6px 24px;
+  padding: 8px 28px 8px 32px;
   cursor: pointer;
   color: var(--text-strong);
-  font-size: 12px;
+  font-size: 17px;
   transition: background 0.1s;
   position: relative;
   font-family: 'Courier New', monospace;
@@ -115,24 +115,24 @@
 }
 
 .menu-divider {
-  height: 1px;
+  height: 2px;
   background: #ccc;
-  margin: 4px 8px;
+  margin: 6px 10px;
 }
 
 .topbar-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
 }
 
 .topbar-greeting {
-  min-width: 180px;
-  max-width: 240px;
+  min-width: 210px;
+  max-width: 280px;
   display: flex;
   align-items: center;
   font-family: 'Courier New', 'Monaco', monospace;
-  font-size: 12px;
+  font-size: 17px;
   color: var(--text-strong);
   white-space: nowrap;
 }
@@ -143,8 +143,8 @@
 
 .greeting-cursor {
   display: inline-block;
-  width: 8px;
-  margin-left: 2px;
+  width: 12px;
+  margin-left: 4px;
   animation: blink 1s step-end infinite;
   color: var(--text-strong);
 }
@@ -155,19 +155,19 @@
 }
 
 .time-display {
-  font-size: 14px;
+  font-size: 19px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   font-weight: bold;
   font-family: 'Courier New', monospace;
 }
 
 .theme-toggle {
-  padding: 4px 8px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 12px;
   border: 1px solid var(--panel-border);
   background: linear-gradient(180deg, var(--panel-start) 0%, var(--panel-end) 100%);
   color: var(--text-strong);
-  font-size: 11px;
+  font-size: 16px;
   cursor: pointer;
   box-shadow: 0 1px 1px rgba(255, 255, 255, 0.4), 0 1px 3px rgba(0, 0, 0, 0.25);
 }

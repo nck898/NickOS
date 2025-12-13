@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import './Dock.css';
 import type { AppName } from '../App';
 
 interface DockIconProps {
-  icon: string;
+  icon: ReactNode;
   label: string;
   onClick: () => void;
   isOpen: boolean;
@@ -36,17 +36,16 @@ interface DockProps {
 }
 
 const Dock = ({ openApps, onOpenApp }: DockProps) => {
-  const dockItems: { icon: string; label: string; appName: AppName }[] = [
+  const dockItems: { icon: ReactNode; label: string; appName: AppName }[] = [
     { icon: '🗑️', label: 'Trash', appName: 'trash' },
-    { icon: '▶️', label: 'TV', appName: 'video' },
+    { icon: '▶️', label: 'Video Player', appName: 'video' },
     { icon: '🎮', label: 'Games', appName: 'game' },
     { icon: '🎵', label: 'FL Studio', appName: 'flstudio' },
     { icon: '🎧', label: 'Music', appName: 'music' },
-    { icon: '🧭', label: 'Safari', appName: 'browser' },
-    { icon: '💬', label: 'Chat', appName: 'chat' },
+    { icon: <img src="/icons/internet-explorer.png" alt="Internet Explorer" />, label: 'Internet Explorer', appName: 'browser' },
     { icon: '📷', label: 'Photo Studio', appName: 'photostudio' },
     { icon: '📝', label: 'Notes', appName: 'notes' },
-    { icon: '🖼️', label: 'Wallpapers', appName: 'wallpaper' },
+    { icon: '🖼️', label: 'Wallpaper', appName: 'wallpaper' },
   ];
 
   return (

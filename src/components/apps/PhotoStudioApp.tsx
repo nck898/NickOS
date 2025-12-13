@@ -18,7 +18,8 @@ type Effect = {
 type WarpMode = {
   id: string;
   label: string;
-  cssTransform: string;
+  cssTransform?: string;
+  overlay?: 'tunnel';
 };
 
 const effects: Effect[] = [
@@ -39,11 +40,12 @@ const effects: Effect[] = [
 const warpModes: WarpMode[] = [
   { id: 'normal', label: 'Normal', cssTransform: 'none' },
   { id: 'mirror', label: 'Mirror', cssTransform: 'scaleX(-1)' },
-  { id: 'squish', label: 'Squeeze', cssTransform: 'scaleX(0.8) scaleY(1.05)' },
-  { id: 'tall', label: 'Tall', cssTransform: 'scaleY(1.2) scaleX(0.95)' },
-  { id: 'wide', label: 'Wide', cssTransform: 'scaleX(1.2) scaleY(0.95)' },
-  { id: 'tiltL', label: 'Tilt Left', cssTransform: 'skewX(-8deg)' },
-  { id: 'tiltR', label: 'Tilt Right', cssTransform: 'skewX(8deg)' },
+  { id: 'bulge', label: 'Bulge', cssTransform: 'scale(1.06)' },
+  { id: 'dent', label: 'Dent', cssTransform: 'scale(0.95)' },
+  { id: 'twirl', label: 'Twirl', cssTransform: 'rotate(4deg) scale(1.05)' },
+  { id: 'fisheye', label: 'Fish Eye', cssTransform: 'scale(1.08)' },
+  { id: 'tunnel', label: 'Light Tunnel', cssTransform: 'scale(0.94)', overlay: 'tunnel' },
+  { id: 'stretch', label: 'Stretch', cssTransform: 'scaleY(1.2) scaleX(0.9)' },
 ];
 
 const PhotoStudioApp = ({ onClose, onMinimize, isMinimized }: PhotoStudioAppProps) => {
@@ -98,52 +100,124 @@ const PhotoStudioApp = ({ onClose, onMinimize, isMinimized }: PhotoStudioAppProp
     });
   }, [stream]);
 
+  const drawWarpedFrame = (video: HTMLVideoElement, canvas: HTMLCanvasElement) => {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const w = video.videoWidth || canvas.width;
+    const h = video.videoHeight || canvas.height;
+    canvas.width = w;
+    canvas.height = h;
+
+    if (warpMode.id === 'mirror') {
+      ctx.save();
+      ctx.filter = activeEffect.filter;
+      ctx.translate(w, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(video, 0, 0, w, h);
+      ctx.restore();
+      return;
+    }
+
+    const temp = document.createElement('canvas');
+    temp.width = w;
+    temp.height = h;
+    const tctx = temp.getContext('2d');
+    if (!tctx) return;
+    tctx.filter = activeEffect.filter;
+    tctx.drawImage(video, 0, 0, w, h);
+
+    const src = tctx.getImageData(0, 0, w, h);
+    const dst = ctx.createImageData(w, h);
+    const cx = w / 2;
+    const cy = h / 2;
+    const radius = Math.min(cx, cy);
+
+    const mapCoord = (x: number, y: number) => {
+      let nx = (x - cx) / radius;
+      let ny = (y - cy) / radius;
+      let r = Math.hypot(nx, ny);
+      if (r > 1) return { sx: x, sy: y, out: true };
+      let theta = Math.atan2(ny, nx);
+
+      switch (warpMode.id) {
+        case 'bulge':
+          r = Math.pow(r, 0.65);
+          break;
+        case 'dent':
+          r = Math.pow(r, 1.35);
+          break;
+        case 'fisheye':
+          r = Math.pow(r, 0.55);
+          break;
+        case 'tunnel':
+          r = Math.pow(r, 1.8);
+          break;
+        case 'twirl':
+          theta += (1 - r) * 1.4;
+          break;
+        case 'stretch':
+          nx *= 0.8;
+          ny *= 1.25;
+          r = Math.hypot(nx, ny);
+          theta = Math.atan2(ny, nx);
+          break;
+        default:
+          break;
+      }
+
+      const sx = cx + r * radius * Math.cos(theta);
+      const sy = cy + r * radius * Math.sin(theta);
+      return { sx, sy, out: false };
+    };
+
+    const sData = src.data;
+    const dData = dst.data;
+
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const { sx, sy } = mapCoord(x, y);
+        const ix = Math.max(0, Math.min(w - 1, Math.round(sx)));
+        const iy = Math.max(0, Math.min(h - 1, Math.round(sy)));
+        const srcIdx = (iy * w + ix) * 4;
+        const dstIdx = (y * w + x) * 4;
+        dData[dstIdx] = sData[srcIdx];
+        dData[dstIdx + 1] = sData[srcIdx + 1];
+        dData[dstIdx + 2] = sData[srcIdx + 2];
+        dData[dstIdx + 3] = sData[srcIdx + 3];
+      }
+    }
+
+    ctx.putImageData(dst, 0, 0);
+  };
+
   const takeSnapshot = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas) return;
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    drawWarpedFrame(video, canvas);
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    ctx.save();
-    // apply warp transforms
-    const w = canvas.width;
-    const h = canvas.height;
-    switch (warpMode.id) {
-      case 'mirror':
-        ctx.translate(w, 0);
-        ctx.scale(-1, 1);
-        break;
-      case 'squish':
-        ctx.translate(w * 0.1, 0);
-        ctx.scale(0.8, 1.05);
-        break;
-      case 'tall':
-        ctx.translate(0, -h * 0.05);
-        ctx.scale(0.95, 1.2);
-        break;
-      case 'wide':
-        ctx.translate(-w * 0.05, 0);
-        ctx.scale(1.2, 0.95);
-        break;
-      case 'tiltL':
-        ctx.transform(1, 0.2, 0, 1, 0, 0);
-        break;
-      case 'tiltR':
-        ctx.transform(1, -0.2, 0, 1, 0, 0);
-        break;
-      default:
-        break;
+    // Overlay effects
+    if (warpMode.overlay === 'tunnel') {
+      ctx.save();
+      const grd = ctx.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        0,
+        canvas.width / 2,
+        canvas.height / 2,
+        Math.max(canvas.width, canvas.height) / 1.2
+      );
+      grd.addColorStop(0, 'rgba(255,255,255,0)');
+      grd.addColorStop(0.4, 'rgba(20,30,60,0.2)');
+      grd.addColorStop(1, 'rgba(0,0,0,0.8)');
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
     }
 
-    ctx.filter = activeEffect.filter;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    ctx.restore();
-
-    // Overlay effects
     if (activeEffect.overlay === 'scanlines') {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
       for (let y = 0; y < canvas.height; y += 4) {
@@ -182,12 +256,17 @@ const PhotoStudioApp = ({ onClose, onMinimize, isMinimized }: PhotoStudioAppProp
     >
       <div className="photo-studio">
         <div className="camera-pane">
+          <div className="capture-bar">
+            <button className="shutter" onClick={takeSnapshot} disabled={!isReady || !!error}>
+              Take Photo
+            </button>
+          </div>
           <div className="camera-frame">
             {!isReady && !error && <div className="status">Initializing camera…</div>}
             {error && <div className="status error">{error}</div>}
             <video
               ref={videoRef}
-              className={`live-video overlay-${activeEffect.overlay || 'none'}`}
+              className={`live-video overlay-${activeEffect.overlay || 'none'} overlay-${warpMode.overlay || 'none'}`}
               style={{ filter: `${activeEffect.filter}`, transform: warpMode.cssTransform }}
               playsInline
               muted
@@ -195,40 +274,43 @@ const PhotoStudioApp = ({ onClose, onMinimize, isMinimized }: PhotoStudioAppProp
             <canvas ref={canvasRef} className="hidden-canvas" />
           </div>
           <div className="controls">
-            <div className="effect-list">
-              {effects.map((effect) => (
-                <button
-                  key={effect.id}
-                  className={`effect-chip ${activeEffect.id === effect.id ? 'active' : ''}`}
-                  onClick={() => setActiveEffect(effect)}
-                >
-                  {effect.label}
-                </button>
-              ))}
+            <div className="control-section">
+              <div className="control-label">Looks</div>
+              <div className="effect-list">
+                {effects.map((effect) => (
+                  <button
+                    key={effect.id}
+                    className={`effect-chip ${activeEffect.id === effect.id ? 'active' : ''}`}
+                    onClick={() => setActiveEffect(effect)}
+                  >
+                    {effect.label}
+                  </button>
+                ))}
+              </div>
             </div>
-            <button className="shutter" onClick={takeSnapshot} disabled={!isReady || !!error}>
-              Take Photo
-            </button>
-          </div>
-          <div className="warp-previews">
-            {warpModes.map((mode, idx) => (
-              <button
-                key={mode.id}
-                className={`warp-tile ${warpMode.id === mode.id ? 'active' : ''}`}
-                onClick={() => setWarpMode(mode)}
-              >
-                <div className="warp-label">{mode.label}</div>
-                <video
-                  ref={(el) => {
-                    warpPreviewRefs.current[idx] = el;
-                  }}
-                  className="warp-video"
-                  muted
-                  playsInline
-                  style={{ transform: mode.cssTransform }}
-                />
-              </button>
-            ))}
+            <div className="control-section">
+              <div className="control-label">Warp</div>
+              <div className="warp-previews">
+                {warpModes.map((mode, idx) => (
+                  <button
+                    key={mode.id}
+                    className={`warp-tile ${warpMode.id === mode.id ? 'active' : ''}`}
+                    onClick={() => setWarpMode(mode)}
+                  >
+                    <div className="warp-label">{mode.label}</div>
+                    <video
+                      ref={(el) => {
+                        warpPreviewRefs.current[idx] = el;
+                      }}
+                      className={`warp-video overlay-${mode.overlay || 'none'}`}
+                      muted
+                      playsInline
+                      style={{ transform: mode.cssTransform }}
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
         <div className="film-strip">

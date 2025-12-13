@@ -19,7 +19,7 @@ const AboutModal = ({ onClose }: AboutModalProps) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className="about-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <span className="modal-icon">🍎</span>
+          <span className="modal-icon">👋</span>
           <h2>About NickOS</h2>
           <button className="modal-close" onClick={onClose}>×</button>
         </div>

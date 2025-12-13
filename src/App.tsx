@@ -11,20 +11,18 @@ import FLStudioApp from './components/apps/FLStudioApp';
 import WallpaperApp from './components/apps/WallpaperApp';
 import BrowserApp from './components/apps/BrowserApp';
 import PhotoStudioApp from './components/apps/PhotoStudioApp';
-import ChatApp, { generateNickReply } from './components/apps/ChatApp';
-import type { ChatMessage } from './components/apps/ChatApp';
 import NoteApp from './components/apps/NoteApp';
 import WeatherWidget from './components/WeatherWidget';
 import MusicPlayerApp from './components/apps/MusicPlayerApp';
 import PetWidget from './components/PetWidget';
 import './App.css';
 
-export type AppName = 'trash' | 'video' | 'game' | 'flstudio' | 'wallpaper' | 'browser' | 'photostudio' | 'chat' | 'notes' | 'music';
+export type AppName = 'trash' | 'video' | 'game' | 'flstudio' | 'wallpaper' | 'browser' | 'photostudio' | 'notes' | 'music';
 
 // Wallpaper variants for light/dark; add your dark-mode assets in /public with these names
 const wallpaperVariants: { [key: string]: { light: string; dark?: string } } = {
-  'landscape': { light: 'wallpapers/landscape.jpg', dark: 'wallpapers/landscape-dark.png' },
-  'snow-leopard': { light: 'wallpapers/snow-leopard.jpg', dark: 'wallpapers/snow-leopard-dark.png' },
+  'landscape': { light: 'wallpapers/landscape.webp', dark: 'wallpapers/landscape-dark.png' },
+  'follow': { light: 'wallpapers/follow.png', dark: 'wallpapers/follow-dark.jpg' },
   'abstract-blue': { light: 'wallpapers/abstract-blue.png', dark: 'wallpapers/abstract-blue-dark.png' },
   'maplestory': { light: 'wallpapers/maplestory.png', dark: 'wallpapers/maplestory-dark.png' },
 };
@@ -33,7 +31,6 @@ function App() {
   const [openApps, setOpenApps] = useState<AppName[]>(['music']);
   const [showAbout, setShowAbout] = useState(false);
   const [currentWallpaper, setCurrentWallpaper] = useState<string>('landscape');
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [minimizedApps, setMinimizedApps] = useState<Set<AppName>>(new Set());
   const getInitialTheme = (): 'light' | 'dark' => {
     if (typeof document === 'undefined') return 'light';
@@ -63,7 +60,7 @@ function App() {
 
   const buildWallpaperCandidates = (wallpaperId: string, activeTheme: 'light' | 'dark') => {
     const variant = wallpaperVariants[wallpaperId];
-    const baseExts = ['png', 'jpg', 'jpeg'];
+    const baseExts = ['png', 'jpg', 'jpeg', 'webp'];
 
     if (activeTheme === 'dark') {
       const primary = variant?.dark;
@@ -130,22 +127,6 @@ function App() {
     setCurrentWallpaper(wallpaperId);
   };
 
-  const handleSendChat = (text: string) => {
-    const userMsg: ChatMessage = {
-      id: crypto.randomUUID(),
-      role: 'user',
-      text,
-      timestamp: Date.now(),
-    };
-    const nickMsg: ChatMessage = {
-      id: crypto.randomUUID(),
-      role: 'nick',
-      text: generateNickReply(text, [...chatMessages, userMsg]),
-      timestamp: Date.now(),
-    };
-    setChatMessages((prev) => [...prev, userMsg, nickMsg]);
-  };
-
   const toggleTheme = () => setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
 
   useEffect(() => {
@@ -186,17 +167,6 @@ function App() {
               return <BrowserApp key={appName} onClose={() => handleCloseApp(appName)} onMinimize={() => handleMinimize(appName)} isMinimized={minimizedApps.has(appName)} />;
             case 'photostudio':
               return <PhotoStudioApp key={appName} onClose={() => handleCloseApp(appName)} onMinimize={() => handleMinimize(appName)} isMinimized={minimizedApps.has(appName)} />;
-            case 'chat':
-              return (
-                <ChatApp
-                  key={appName}
-                  onClose={() => handleCloseApp(appName)}
-                  onMinimize={() => handleMinimize(appName)}
-                  isMinimized={minimizedApps.has(appName)}
-                  messages={chatMessages}
-                  onSend={handleSendChat}
-                />
-              );
             case 'notes':
               return <NoteApp key={appName} onClose={() => handleCloseApp(appName)} onMinimize={() => handleMinimize(appName)} isMinimized={minimizedApps.has(appName)} />;
             case 'music':
