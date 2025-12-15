@@ -2,7 +2,7 @@
 
 A retro Y2K-inspired web operating system built with React and TypeScript. Inspired by both [RyoOS](https://os.ryo.lu/) and [PostHog.com](https://posthog.com/), this was built with Cursor, Codex, and my own codin skills :)
 
-<img width="1778" height="982" alt="NickOS_screenshot" src="https://github.com/user-attachments/assets/13f4d3ec-08db-4ad1-b408-1f56a16dd5d5" />
+<img width="1783" height="987" alt="Screenshot 2025-12-13 at 2 38 00 AM" src="https://github.com/user-attachments/assets/560ced90-c6fd-4722-8610-64c08751cf7b" />
 
 Test it out [here](https://nick-os.vercel.app/)
 
